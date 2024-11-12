@@ -1,0 +1,96 @@
+package lelang.app.model;
+
+import java.util.Date;
+
+public class PengajuanLelang {
+    private long id, userId, kategoriId;
+    private String nama_barang, status_pengajuan;
+    private int harga_lelang, harga_barang;
+    private Date mulai_lelang, selesai_lelang;
+    
+    public PengajuanLelang(long id, long userId, long kategoriId, String nama_barang, String status_pengajuan,
+            int harga_lelang, int harga_barang, Date mulai_lelang, Date selesai_lelang) {
+        this.id = id;
+        this.userId = userId;
+        this.kategoriId = kategoriId;
+        this.nama_barang = nama_barang;
+        this.status_pengajuan = status_pengajuan;
+        this.harga_lelang = harga_lelang;
+        this.harga_barang = harga_barang;
+        this.mulai_lelang = mulai_lelang;
+        this.selesai_lelang = selesai_lelang;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getKategoriId() {
+        return kategoriId;
+    }
+
+    public void setKategoriId(long kategoriId) {
+        this.kategoriId = kategoriId;
+    }
+
+    public String getNama_barang() {
+        return nama_barang;
+    }
+
+    public void setNama_barang(String nama_barang) {
+        this.nama_barang = nama_barang;
+    }
+
+    public String getStatus_pengajuan() {
+        return status_pengajuan;
+    }
+
+    public void setStatus_pengajuan(String status_pengajuan) {
+        this.status_pengajuan = status_pengajuan;
+    }
+
+    public int getHarga_lelang() {
+        return harga_lelang;
+    }
+
+    public void setHarga_lelang(int harga_lelang) {
+        this.harga_lelang = harga_lelang;
+    }
+
+    public int getHarga_barang() {
+        return harga_barang;
+    }
+
+    public void setHarga_barang(int harga_barang) {
+        this.harga_barang = harga_barang;
+    }
+
+    public Date getMulai_lelang() {
+        return mulai_lelang;
+    }
+
+    public void setMulai_lelang(Date mulai_lelang) {
+        this.mulai_lelang = mulai_lelang;
+    }
+
+    public Date getSelesai_lelang() {
+        return selesai_lelang;
+    }
+
+    public void setSelesai_lelang(Date selesai_lelang) {
+        this.selesai_lelang = selesai_lelang;
+    }
+
+}
