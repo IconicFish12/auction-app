@@ -1,6 +1,6 @@
 package lelang.app.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
     protected long id;
@@ -20,10 +20,6 @@ public class User {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getNama_lengkap() {

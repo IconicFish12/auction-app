@@ -17,11 +17,26 @@
     <dependencies>
     <!-- Other dependencies -->
 
+        <!-- JDBC Postgres -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.4</version>
         </dependency>
+
+        <!-- Icon FontAwasome -->
+        <dependency>
+            <groupId>com.github.jiconfont</groupId>
+            <artifactId>jiconfont-swing</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.jiconfont</groupId>
+            <artifactId>jiconfont-font_awesome</artifactId>
+            <version>4.7.0.1</version>
+        </dependency>
+        
     </dependencies>
         
 

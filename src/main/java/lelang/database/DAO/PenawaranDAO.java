@@ -2,31 +2,31 @@ package lelang.database.DAO;
 
 import java.util.List;
 
-import lelang.app.model.Lelang;
+import lelang.app.model.Penawaran;
 import lelang.database.MainDAO;
 
-public class LelangDAO implements MainDAO<Lelang>{
+public class PenawaranDAO implements MainDAO<Penawaran> {
 
     @Override
-    public Lelang findById(long id) {
+    public Penawaran findById(long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     @Override
-    public List<Lelang> findAll() {
+    public List<Penawaran> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
     @Override
-    public void create(Lelang entity) {
+    public void create(Penawaran entity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override
-    public void update(Lelang entity) {
+    public void update(Penawaran entity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
@@ -36,5 +36,5 @@ public class LelangDAO implements MainDAO<Lelang>{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
-
+    
 }

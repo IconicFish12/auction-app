@@ -1,6 +1,6 @@
 package lelang.app.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Lelang {
     private long id, barangId, userId, petugasId;
