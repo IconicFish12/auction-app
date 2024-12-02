@@ -1,5 +1,6 @@
 package lelang.database.DAO;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import lelang.app.model.PengajuanLelang;
@@ -14,7 +15,7 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
     }
 
     @Override
-    public List<PengajuanLelang> findAll() {
+    public LinkedHashMap<Integer, List<PengajuanLelang>> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }

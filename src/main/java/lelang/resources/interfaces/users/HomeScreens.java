@@ -1,7 +1,7 @@
 package lelang.resources.interfaces.users;
 
 import java.awt.*;
-import java.awt.event.*;
+// import java.awt.event.*;
 import javax.swing.*;
 
 import jiconfont.icons.font_awesome.FontAwesome;
@@ -77,7 +77,7 @@ public class HomeScreens extends JFrame {
         navContainer.add(profile);
 
         // ================== BODY CONTAINER ===================
-        JPanel bodyContainer = new JPanel();
+        // JPanel bodyContainer = new JPanel();
 
         // ================== TAMBAHKAN KE JFrame ===================
         add(headerContainer, BorderLayout.NORTH);

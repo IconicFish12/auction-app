@@ -1,6 +1,13 @@
 package lelang.app.controller;
 
-public class UserController extends Controller  {
+import lelang.app.model.Masyarakat;
+import lelang.database.DAO.MasyarakatDAO;
+import lelang.database.DAO.PetugasDAO;
+
+public class UserController extends Controller {
+
+    private MasyarakatDAO masyarakat;
+    private PetugasDAO petugas;
 
     @Override
     public void getData() {

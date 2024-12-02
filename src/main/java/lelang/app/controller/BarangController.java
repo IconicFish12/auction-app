@@ -1,6 +1,12 @@
 package lelang.app.controller;
 
+// import lelang.app.model.Barang;
+import lelang.database.DAO.BarangDAO;
+
 public class BarangController extends Controller {
+
+    private BarangDAO barang;
+
 
     @Override
     public void getData() {

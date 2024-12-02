@@ -1,5 +1,6 @@
 package lelang.database.DAO;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import lelang.app.model.Order;
@@ -14,7 +15,7 @@ public class OrderDAO implements MainDAO<Order>{
     }
 
     @Override
-    public List<Order> findAll() {
+    public LinkedHashMap<Integer, List<Order>> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }

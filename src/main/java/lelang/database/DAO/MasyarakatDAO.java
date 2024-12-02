@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import lelang.app.model.Masyarakat;
@@ -40,11 +41,13 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                 System.out.println("Berhasil Melakukan Pengambilan Data");
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println(e.getMessage());
             } finally {
                 try {
                     conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -53,21 +56,18 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
     }
 
     @Override
-    public List<Masyarakat> findAll() {
-        int i = 0;
-        Masyarakat masyarakat = null;
-        List<Masyarakat> masyarakatList = new ArrayList<>();
+    public LinkedHashMap<Integer, List<Masyarakat>> findAll() {
+        LinkedHashMap<Integer, List<Masyarakat>> masyarakatList = new LinkedHashMap<>();
         String sql = "SELECT * FROM masyarakat";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
             try {
                 PreparedStatement statement = conn.prepareStatement(sql);
-
                 ResultSet rs = statement.executeQuery();
 
                 while (rs.next()) {
-                    masyarakat = new Masyarakat(
+                    Masyarakat masyarakat = new Masyarakat(
                             rs.getLong("id"),
                             rs.getInt("nik"),
                             rs.getString("nama_lengkap"),
@@ -76,18 +76,21 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                             rs.getString("password"),
                             rs.getString("alamat"),
                             rs.getDate("tanggal_lahir"));
-                    masyarakatList.add(i, masyarakat);
-                    i++;
-                }
+                    masyarakatList.putIfAbsent((int) masyarakat.getId(), new ArrayList<>());
+                    masyarakatList.get((int) masyarakat.getId()).add(masyarakat);
 
+                }
+                
                 System.out.println("Berhasil Melakukan Pengambilan Data");
             } catch (Exception e) {
                 System.out.println("Gagal Melakukan Pengambilan Data");
+                System.out.println(e.getMessage());
                 e.printStackTrace();
             } finally {
                 try {
                     conn.close();
                 } catch (Exception e) {
+                    System.out.println(e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -104,25 +107,26 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
         if (conn != null) {
             try {
                 PreparedStatement statement = conn.prepareStatement(sql);
-
-                // Sesuaikan urutan parameter dengan urutan kolom di query
-                statement.setString(1, masyarakat.getNama_lengkap()); // nama_lengkap
-                statement.setInt(2, masyarakat.getNik()); // nik
-                statement.setString(3, masyarakat.getUsername()); // username
-                statement.setString(4, masyarakat.getEmail()); // email
-                statement.setString(5, masyarakat.getPassword()); // password
-                statement.setString(6, masyarakat.getAlamat()); // alamat
-                statement.setDate(7, new java.sql.Date(masyarakat.getTanggal_lahir().getTime())); // tanggal_lahir
+                statement.setString(1, masyarakat.getNama_lengkap());
+                statement.setInt(2, masyarakat.getNik());
+                statement.setString(3, masyarakat.getUsername());
+                statement.setString(4, masyarakat.getEmail());
+                statement.setString(5, masyarakat.getPassword());
+                statement.setString(6, masyarakat.getAlamat());
+                statement.setDate(7, new java.sql.Date(masyarakat.getTanggal_lahir().getTime()));
 
                 statement.executeUpdate();
                 System.out.println("Data berhasil dimasukkan");
             } catch (Exception e) {
+                System.out.println("Data gagal dimasukkan");
                 e.printStackTrace();
+                System.out.println(e.getMessage());
             } finally {
                 try {
                     conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -136,8 +140,8 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
         if (conn != null) {
             try {
                 PreparedStatement statement = conn.prepareStatement(sql);
-                statement.setInt(1, masyarakat.getNik());
-                statement.setLong(2, masyarakat.getId());
+                statement.setLong(1, masyarakat.getId());
+                statement.setInt(2, masyarakat.getNik());
                 statement.setString(3, masyarakat.getNama_lengkap());
                 statement.setString(4, masyarakat.getUsername());
                 statement.setString(5, masyarakat.getEmail());
@@ -146,13 +150,18 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                 statement.setDate(8, new java.sql.Date(masyarakat.getTanggal_lahir().getTime()));
 
                 statement.executeUpdate();
+                System.out.println("Data berhasil diubah");
+
             } catch (Exception e) {
+                System.out.println("Data gagal diubah");
                 e.printStackTrace();
+                System.out.println(e.getMessage());
             } finally {
                 try {
                     conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -168,13 +177,19 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement.setLong(1, id);
                 statement.executeUpdate();
+
+                System.out.println("Data berhasil dihapus");
             } catch (Exception e) {
+                System.out.println("Data gagal dihapus");
+
                 e.printStackTrace();
+                System.out.println(e.getMessage());
             } finally {
                 try {
                     conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
         }
