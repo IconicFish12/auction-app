@@ -18,126 +18,85 @@ public class BarangDAO implements MainDAO<Barang> {
     @Override
     public Barang findById(long id) {
         Barang barang = null;
-        String sql = "SELECT * FROM masyarakat WHERE id = ?";
-        Connection conn = DBConnection.getConnection();
+        String sql = "SELECT * FROM barang WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement statement = conn.prepareStatement(sql)) {
 
-        if (conn != null) {
-            try {
-                PreparedStatement statement = conn.prepareStatement(sql);
-                statement.setLong(1, id);
-
-                ResultSet rs = statement.executeQuery();
-
+            statement.setLong(1, id);
+            try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    Masyarakat masyarakat = new Masyarakat(
-                            rs.getLong("id"),
-                            rs.getInt("nik"),
-                            rs.getString("nama_lengkap"),
-                            rs.getString("username"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getString("alamat"),
-                            rs.getDate("tanggal_lahir"));
-
-                    Kategori kategori = new Kategori(
-                            rs.getLong("id"),
-                            rs.getString("nama_kategori"));
-
+                    Kategori kategori = new KategoriDAO().findById(rs.getLong("kategoriId"));
+                    Masyarakat masyarakat = new MasyarakatDAO().findById(rs.getLong("userId"));
                     barang = new Barang(
                             rs.getLong("id"),
                             rs.getLong("userId"),
                             rs.getLong("kategoriId"),
                             rs.getString("nama_barang"),
                             rs.getString("deskripsiBarang"),
-                            rs.getInt("harga"),
+                            rs.getInt("hargaBarang"),
                             rs.getString("foto"),
-                            rs.getString("statusLelang"),
-                            rs.getString("proses_lelang"),
+                            rs.getString("status_lelang"),
+                            rs.getString("proses"),
                             kategori,
                             masyarakat);
                 }
-
-                System.out.println("Berhasil Melakukan Pengambilan Data");
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-            } finally {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
         return barang;
     }
 
     @Override
     public LinkedHashMap<Integer, List<Barang>> findAll() {
         LinkedHashMap<Integer, List<Barang>> barangList = new LinkedHashMap<>();
-        String sql = "SELECT * FROM barang LEFT JOIN masyarakat ON barang.\"userId\" = masyarakat.id  LEFT JOIN kategori ON barang.\"kategoriId\" = kategori.id";
-        Connection conn = DBConnection.getConnection();
-
-        if (conn != null) {
-            try {
+        String sql = """
+                    SELECT b.*, k.nama_kategori, m.nama_user
+                    FROM barang b
+                    LEFT JOIN kategori k ON b.kategoriId = k.id
+                    LEFT JOIN masyarakat m ON b.userId = m.id
+                """;
+        try (Connection conn = DBConnection.getConnection();
                 PreparedStatement statement = conn.prepareStatement(sql);
-                ResultSet rs = statement.executeQuery();
+                ResultSet rs = statement.executeQuery()) {
 
-                while (rs.next()) {
-                    Masyarakat masyarakat = new Masyarakat(
-                            rs.getLong("id"),
-                            rs.getInt("nik"),
-                            rs.getString("nama_lengkap"),
-                            rs.getString("username"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getString("alamat"),
-                            rs.getDate("tanggal_lahir"));
-
-                    Kategori kategori = new Kategori(
-                            rs.getLong("id"),
-                            rs.getString("nama_kategori"));
-
-                    Barang barang = new Barang(
-                            rs.getLong("id"),
-                            rs.getLong("userId"),
-                            rs.getLong("kategoriId"),
-                            rs.getString("nama_barang"),
-                            rs.getString("deskripsiBarang"),
-                            rs.getInt("harga"),
-                            rs.getString("foto"),
-                            rs.getString("statusLelang"),
-                            rs.getString("proses_lelang"),
-                            kategori,
-                            masyarakat);
-                            
-                    barangList.putIfAbsent((int) barang.getId(), new ArrayList<>());
-                    barangList.get((int) barang.getId()).add(barang);
-                }
-
-                System.out.println("Berhasil Melakukan Pengambilan Data");
-            } catch (Exception e) {
-                System.out.println("Gagal Melakukan Pengambilan Data");
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            } finally {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
-                }
+            while (rs.next()) {
+                Kategori kategori = new Kategori(
+                        rs.getLong("kategoriId"),
+                        rs.getString("nama_kategori"));
+                Masyarakat masyarakat = new Masyarakat(
+                        rs.getLong("id"),
+                        rs.getInt("nik"),
+                        rs.getString("nama_lengkap"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("alamat"),
+                        rs.getDate("tanggal_lahir"));
+                Barang barang = new Barang(
+                        rs.getLong("id"),
+                        rs.getLong("userId"),
+                        rs.getLong("kategoriId"),
+                        rs.getString("nama_barang"),
+                        rs.getString("deskripsiBarang"),
+                        rs.getInt("hargaBarang"),
+                        rs.getString("foto"),
+                        rs.getString("status_lelang"),
+                        rs.getString("proses"),
+                        kategori,
+                        masyarakat);
+                barangList.putIfAbsent((int) barang.getId(), new ArrayList<>());
+                barangList.get((int) barang.getId()).add(barang);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
         return barangList;
     }
 
     @Override
     public void create(Barang barang) {
-        String sql = "INSERT INTO barang (userId, kategoriId, nama_barang, deskripsiBarang, harga, foto, status_lelang, proses) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO barang (\"userId\", \"kategoriId\", nama_barang, \"deskripsiBarang\", \"hargaBarang\", foto, status_lelang, proses) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
@@ -153,9 +112,7 @@ public class BarangDAO implements MainDAO<Barang> {
                 statement.setString(8, barang.getproses_lelang());
 
                 statement.executeUpdate();
-                System.out.println("Data berhasil dimasukkan");
             } catch (Exception e) {
-                System.out.println("Gagal Melakukan Pembuatan Data");
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             } finally {
@@ -171,7 +128,7 @@ public class BarangDAO implements MainDAO<Barang> {
 
     @Override
     public void update(Barang barang) {
-        String sql = "UPDATE barang SET userId = ?, kategoriId = ?, nama_barang = ?, deskripsiBarang = ?, harga = ?, foto = ?, status_lelang = ?, proses = ? WHERE id = ?";
+        String sql = "UPDATE barang SET userId = ?, kategoriId = ?, nama_barang = ?, deskripsiBarang = ?, hargaBarang = ?, foto = ?, status_lelang = ?, proses = ? WHERE id = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
@@ -187,9 +144,7 @@ public class BarangDAO implements MainDAO<Barang> {
                 statement.setString(8, barang.getproses_lelang());
 
                 statement.executeUpdate();
-                System.out.println("Data berhasil dimasukkan");
             } catch (Exception e) {
-                System.out.println("Gagal Melakukan Pembuatan Data");
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             } finally {
@@ -214,9 +169,7 @@ public class BarangDAO implements MainDAO<Barang> {
                 statement.setLong(1, id);
                 statement.executeUpdate();
 
-                System.out.println("Data berhasil dihapus");
             } catch (Exception e) {
-                System.out.println("Data gagal dihapus");
 
                 e.printStackTrace();
                 System.out.println(e.getMessage());

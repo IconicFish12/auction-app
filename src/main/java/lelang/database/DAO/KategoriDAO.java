@@ -29,10 +29,8 @@ public class KategoriDAO implements MainDAO<Kategori> {
                 if (rs.next()) {
                     kategori = new Kategori(
                             rs.getLong("id"),
-                            rs.getString("nama_lengkap"));
+                            rs.getString("nama_kategori"));
                 }
-
-                System.out.println("Berhasil Melakukan Pengambilan Data");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e.getMessage());
@@ -67,15 +65,8 @@ public class KategoriDAO implements MainDAO<Kategori> {
 
                     kategoriList.putIfAbsent((int) kategori.getId(), new ArrayList<>());
                     kategoriList.get((int) kategori.getId()).add(kategori);
-
-                    if(kategoriList.isEmpty()){
-                        System.out.println("data yang diambil kosong");
-                    }
-
-                    System.out.println("Berhasil Melakukan Pengambilan data");
                 }
             } catch (Exception e) {
-                System.out.println("Gagal Pengambilan Data");
                 e.printStackTrace();
                 System.out.println(e.getMessage());
 
@@ -105,7 +96,6 @@ public class KategoriDAO implements MainDAO<Kategori> {
                 statement.setString(1, kategori.getNamaKategori());
 
                 statement.executeUpdate();
-                System.out.println("Berhasil Membuat Data kategori");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e.getMessage());
@@ -133,9 +123,7 @@ public class KategoriDAO implements MainDAO<Kategori> {
                 statement.setString(2, kategori.getNamaKategori());
 
                 statement.executeUpdate();
-                System.out.println("Berhasil Mengupdate Data kategori");
             } catch (Exception e) {
-                System.out.println("Gagal Mengupdate Data kategori");
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             } finally {
@@ -161,9 +149,7 @@ public class KategoriDAO implements MainDAO<Kategori> {
                 statement.setLong(1, id);
 
                 statement.executeUpdate();
-                System.out.println("Berhasil Mengupdate Data kategori");
-            } catch (Exception e) {
-                System.out.println("Gagal Mengupdate Data kategori");
+            } catch (Exception e) { 
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             } finally {

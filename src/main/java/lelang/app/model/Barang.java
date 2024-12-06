@@ -1,16 +1,30 @@
 package lelang.app.model;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import lelang.database.DAO.KategoriDAO;
+import lelang.database.DAO.MasyarakatDAO;
+
 public class Barang {
     private long id, userId, kategoriId;
     private String nama_barang, deskripsiBarang, foto, proses_lelang, status_lelang;
     private int harga_barang;
 
-    // relation
+    // Add Lazy Load
     private Kategori kategori;
     private Masyarakat user;
 
-    public Barang(long id, long userId, long kategoriId, String nama_barang, String deskripsiBarang, int harga_barang, 
-                    String foto, String status_lelang, String proses_lelang, Kategori kategori, Masyarakat user) {
+    // Adding DAO Into Barang
+    private static KategoriDAO dataKategori = new KategoriDAO();
+    private static MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
+
+    // Handling N to N Relation
+    private LinkedHashMap<Integer, List<Lelang>> lelangs = new LinkedHashMap<>();
+
+    public Barang(long id, long userId, long kategoriId, String nama_barang, String deskripsiBarang, int harga_barang,
+            String foto, String status_lelang, String proses_lelang, Kategori kategori, Masyarakat user) {
         this.id = id;
         this.userId = userId;
         this.kategoriId = kategoriId;
@@ -20,11 +34,8 @@ public class Barang {
         this.proses_lelang = proses_lelang;
         this.status_lelang = status_lelang;
         this.harga_barang = harga_barang;
-    }
-
-    public Barang(long long1, long long2, long long3, String string, String string2, int int1, String string3,
-            String string4, String string5, Barang barang) {
-        //TODO Auto-generated constructor stub
+        this.kategori = kategori;
+        this.user = user;
     }
 
     public long getId() {
@@ -35,64 +46,32 @@ public class Barang {
         return userId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     public long getKategoriId() {
         return kategoriId;
-    }
-
-    public void setKategoriId(long kategoriId) {
-        this.kategoriId = kategoriId;
     }
 
     public String getNama_barang() {
         return nama_barang;
     }
 
-    public void setNama_barang(String nama_barang) {
-        this.nama_barang = nama_barang;
-    }
-
     public String getDeskripsiBarang() {
         return deskripsiBarang;
-    }
-
-    public void setDeskripsiBarang(String deskripsiBarang) {
-        this.deskripsiBarang = deskripsiBarang;
     }
 
     public String getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
     public String getproses_lelang() {
         return proses_lelang;
-    }
-
-    public void setproses_lelang(String proses_lelang) {
-        this.proses_lelang = proses_lelang;
     }
 
     public String getStatus_lelang() {
         return status_lelang;
     }
 
-    public void setStatus_lelang(String status_lelang) {
-        this.status_lelang = status_lelang;
-    }
-
     public int getHarga_barang() {
         return harga_barang;
-    }
-
-    public void setHarga_barang(int harga_barang) {
-        this.harga_barang = harga_barang;
     }
 
     public String getProses_lelang() {
@@ -100,26 +79,46 @@ public class Barang {
     }
 
     public Kategori getKategori() {
+        if (kategori == null) {
+            this.kategori = dataKategori.findById(this.getKategoriId());
+        }
+
         return kategori;
     }
 
     public Masyarakat getUser() {
+        if (user == null) {
+            this.user = dataMasyarakat.findById(this.getUserId());
+        }
+
         return user;
+    }
+
+    public void addLelangs(Lelang lelang) {
+        this.lelangs.putIfAbsent((int) lelang.getBarangId(), new ArrayList<>());
+    }
+
+    public LinkedHashMap<Integer, List<Lelang>> getLelangs() {
+        return lelangs;
     }
 
     // behavior
 
-    public void displayData(){
+    public void displayData() {
         System.out.println(" =========== Data Barang ============");
         System.out.println("Data ke -" + id);
-        System.out.println("Nama Barang : " + nama_barang);
-        System.out.println("Kategori Barang : " + kategori.getNamaKategori());
-        System.out.println("Pemilik Barang : " + user.getNama_lengkap());
-        System.out.println("Deskripsi Barang : " + deskripsiBarang);
-        System.out.println("Foto Barang : " + foto);
-        System.out.println("Harga Barang : " + harga_barang);
-        System.out.println("Status Pelelangan : " + status_lelang);
-        System.out.println("Status Proses : " + proses_lelang);
+        System.out.println("Nama Barang : " + this.getNama_barang());
+        System.out.println("Kategori Barang: " + (kategori != null
+                ? this.getKategori().getNamaKategori()
+                : "Kategori tidak ditemukan"));
+        System.out.println("Pemilik Barang: " +
+                (user != null
+                        ? this.getUser().getNama_lengkap()
+                        : "Pemilik tidak ditemukan"));
+        System.out.println("Deskripsi Barang : " + this.getDeskripsiBarang());
+        System.out.println("Foto Barang : " + this.getFoto());
+        System.out.println("Harga Barang : " + this.getHarga_barang());
+        System.out.println("Status Pelelangan : " + this.getStatus_lelang());
+        System.out.println("Status Proses : " + this.getProses_lelang());
     }
-
 }

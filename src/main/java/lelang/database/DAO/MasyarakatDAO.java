@@ -37,8 +37,6 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                             rs.getString("alamat"),
                             rs.getDate("tanggal_lahir"));
                 }
-
-                System.out.println("Berhasil Melakukan Pengambilan Data");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e.getMessage());
@@ -81,9 +79,7 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
 
                 }
                 
-                System.out.println("Berhasil Melakukan Pengambilan Data");
             } catch (Exception e) {
-                System.out.println("Gagal Melakukan Pengambilan Data");
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             } finally {
@@ -116,9 +112,7 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                 statement.setDate(7, new java.sql.Date(masyarakat.getTanggal_lahir().getTime()));
 
                 statement.executeUpdate();
-                System.out.println("Data berhasil dimasukkan");
             } catch (Exception e) {
-                System.out.println("Data gagal dimasukkan");
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             } finally {
@@ -150,10 +144,8 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                 statement.setDate(8, new java.sql.Date(masyarakat.getTanggal_lahir().getTime()));
 
                 statement.executeUpdate();
-                System.out.println("Data berhasil diubah");
 
             } catch (Exception e) {
-                System.out.println("Data gagal diubah");
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             } finally {
@@ -178,9 +170,7 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
                 statement.setLong(1, id);
                 statement.executeUpdate();
 
-                System.out.println("Data berhasil dihapus");
             } catch (Exception e) {
-                System.out.println("Data gagal dihapus");
 
                 e.printStackTrace();
                 System.out.println(e.getMessage());
