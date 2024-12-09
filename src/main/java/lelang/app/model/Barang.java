@@ -37,7 +37,7 @@ public class Barang {
         this.kategori = kategori;
         this.user = user;
     }
-
+    
     public long getId() {
         return id;
     }
@@ -100,6 +100,62 @@ public class Barang {
 
     public LinkedHashMap<Integer, List<Lelang>> getLelangs() {
         return lelangs;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public void setKategoriId(long kategoriId) {
+        this.kategoriId = kategoriId;
+    }
+
+    public void setNama_barang(String nama_barang) {
+        this.nama_barang = nama_barang;
+    }
+
+    public void setDeskripsiBarang(String deskripsiBarang) {
+        this.deskripsiBarang = deskripsiBarang;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public void setProses_lelang(String proses_lelang) {
+        this.proses_lelang = proses_lelang;
+    }
+
+    public void setStatus_lelang(String status_lelang) {
+        this.status_lelang = status_lelang;
+    }
+
+    public void setHarga_barang(int harga_barang) {
+        this.harga_barang = harga_barang;
+    }
+
+    public void setKategori(Kategori kategori) {
+        this.kategori = kategori;
+    }
+
+    public void setUser(Masyarakat user) {
+        this.user = user;
+    }
+
+    public static void setDataKategori(KategoriDAO dataKategori) {
+        Barang.dataKategori = dataKategori;
+    }
+
+    public static void setDataMasyarakat(MasyarakatDAO dataMasyarakat) {
+        Barang.dataMasyarakat = dataMasyarakat;
+    }
+
+    public void setLelangs(LinkedHashMap<Integer, List<Lelang>> lelangs) {
+        this.lelangs = lelangs;
     }
 
     // behavior

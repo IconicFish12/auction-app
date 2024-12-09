@@ -2,6 +2,7 @@ package lelang;
 
 import java.sql.Connection;
 // import java.sql.Date;
+// import java.sql.Date;
 import java.util.List;
 import java.util.LinkedHashMap;
 
@@ -9,12 +10,13 @@ import java.util.LinkedHashMap;
 
 import lelang.app.model.Barang;
 import lelang.app.model.Kategori;
+import lelang.app.model.Lelang;
 import lelang.app.model.Masyarakat;
 import lelang.app.model.Petugas;
 import lelang.database.DBConnection;
-import lelang.database.MainDAO;
 import lelang.database.DAO.BarangDAO;
 import lelang.database.DAO.KategoriDAO;
+import lelang.database.DAO.LelangDAO;
 import lelang.database.DAO.MasyarakatDAO;
 import lelang.database.DAO.PetugasDAO;
 // import lelang.resources.interfaces.users.HomeScreens;
@@ -27,15 +29,13 @@ public class Main {
         if (connect != null) {
             try {
                 System.out.println("Database Is Connect");
+
                 // Try Crud
-                @SuppressWarnings("rawtypes")
-                MainDAO dataKategori = new KategoriDAO();
-                @SuppressWarnings("rawtypes")
-                MainDAO dataPetugas = new PetugasDAO();
-                @SuppressWarnings("rawtypes")
-                MainDAO dataMasyarakat = new MasyarakatDAO();
-                @SuppressWarnings("rawtypes")
-                MainDAO dataBarang = new BarangDAO();
+                KategoriDAO dataKategori = new KategoriDAO();
+                PetugasDAO dataPetugas = new PetugasDAO();
+                MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
+                BarangDAO dataBarang = new BarangDAO();
+                LelangDAO dataLelang = new LelangDAO();
 
                 // Masyarakat inputUser = new Masyarakat(4, 10927, "Muhammad Rifki Anindita",
                 // "iki1611",
@@ -45,11 +45,16 @@ public class Main {
                 // Petugas inputPetugas = new Petugas(2, 8911823, "Sherly Mulivia", "sherAway",
                 // "sherly8890@gmail.com", "password", "asasasasa" , Date.valueOf("1999-05-24"),
                 // "petugas");
-                // Barang inputBarang = new Barang(1, 4, 4, "Laptop ROG", "jasdjadnkads",
-                // 16000000, "kadamsdasmdas", "ditutup",
-                // "belum", dataKategori.findById(4), dataMasyarakat.findById(4));
+                // Barang inputBarang = new Barang(5, 5, 4, "Mesin Cetak ", "jasdjadnkads",
+                // 4500000, "kadamsdasmdas", "ditutup",
+                // "belum", dataKategori.findById(4), dataMasyarakat.findById(5));
 
                 // Kategori kategori = new Kategori(1, "Elektronik" );
+
+                // Lelang inputLelang =new Lelang(1, 2, 4, 1,
+                // Date.valueOf("2024-05-24"), Date.valueOf("2024-09-24"), null,
+                // 16000000, 0,
+                // dataMasyarakat.findById(4),null);
 
                 // Create Data
                 // System.out.println("=== Testing Create ===");
@@ -57,16 +62,16 @@ public class Main {
                 // dataPetugas.create(inputPetugas);
                 // dataMasyarakat.create(inputUser);
                 // dataBarang.create(inputBarang);
+                // dataLelang.create(inputLelang);
                 // System.out.println("Create new Data: " + data);
 
-                // 2. Test FindById
+                // 2. Test FindById / testing
                 // System.out.println("=== Testing FindById ===");
-                // Kategori foundData = dataKategori.findById(4);
-                // System.out.println("Found Data by ID: " + foundData.getNamaKategori());
+                // Barang foundData = dataBarang.findById(2);
+                // System.out.println("Found Data by ID: " + foundData.getHarga_barang());
 
-                // 3. Test FindAll
-                System.out.println("=== Testing FindAll ===");
-                @SuppressWarnings("unchecked")
+                // 3. Test FindAll / testing
+
                 LinkedHashMap<Integer, List<Kategori>> kategoriList = dataKategori.findAll();
                 if (!kategoriList.isEmpty()) {
                     System.out.println("All Kategori: ");
@@ -80,8 +85,7 @@ public class Main {
                 } else {
                     System.out.println("Data kategori yang diambil kosong");
                 }
-                
-                @SuppressWarnings("unchecked")
+
                 LinkedHashMap<Integer, List<Masyarakat>> masyarakatList = dataMasyarakat.findAll();
                 if (!masyarakatList.isEmpty()) {
                     System.out.println("All masyarakat: ");
@@ -97,7 +101,6 @@ public class Main {
 
                 System.out.println("");
 
-                @SuppressWarnings("unchecked")
                 LinkedHashMap<Integer, List<Petugas>> petugasList = dataPetugas.findAll();
                 if (!petugasList.isEmpty()) {
                     System.out.println("All Petugas: ");
@@ -114,7 +117,6 @@ public class Main {
 
                 System.out.println("");
 
-                @SuppressWarnings("unchecked")
                 LinkedHashMap<Integer, List<Barang>> barangList = dataBarang.findAll();
                 if (!barangList.isEmpty()) {
                     System.out.println("All Barang: ");
@@ -126,6 +128,20 @@ public class Main {
                     });
                 } else {
                     System.out.println("Data barang yang diambil kosong");
+                }
+
+                System.out.println("");
+
+                LinkedHashMap<Integer, List<Lelang>> lelangList = dataLelang.findAll();
+                if (!lelangList.isEmpty()) {
+                    System.out.println("All Barang Lelang: ");
+                    lelangList.forEach((id, lelang) -> {
+                        lelang.forEach(record -> {
+                            record.displayData();
+                        });
+                    });
+                } else {
+                    System.out.println("Data Lelang yang diambil kosong");
                 }
 
                 // SwingUtilities.invokeLater(() -> {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import lelang.app.model.Barang;
 import lelang.app.model.Lelang;
 import lelang.app.model.Masyarakat;
 import lelang.app.model.Petugas;
@@ -49,33 +50,27 @@ public class LelangDAO implements MainDAO<Lelang> {
 
     @Override
     public LinkedHashMap<Integer, List<Lelang>> findAll() {
+
         LinkedHashMap<Integer, List<Lelang>> lelangList = new LinkedHashMap<>();
-        String query = """
-                    SELECT lelang.*,
-                           masyarakat.nik AS masyarakat_nik, masyarakat.nama_lengkap AS masyarakat_nama,
-                           petugas.nip AS petugas_nip, petugas.nama_lengkap AS petugas_nama
-                    FROM lelang
-                    LEFT JOIN masyarakat ON lelang.userId = masyarakat.id
-                    LEFT JOIN petugas ON lelang.petugasId = petugas.id
-                """;
+        String query = " SELECT * FROM lelang LEFT JOIN masyarakat ON lelang.\"userId\" = masyarakat.id LEFT JOIN petugas ON lelang.\"petugasId\" = petugas.id";
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement statement = conn.prepareStatement(query);
                 ResultSet rs = statement.executeQuery()) {
 
             while (rs.next()) {
                 Masyarakat masyarakat = new Masyarakat(
-                        rs.getLong("userId"),
-                        rs.getInt("masyarakat_nik"),
-                        rs.getString("masyarakat_nama"),
+                        rs.getLong("id"),
+                        rs.getInt("nik"),
+                        rs.getString("nama_lengkap"),
                         rs.getString("username"),
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("alamat"),
                         rs.getDate("tanggal_lahir"));
                 Petugas petugas = new Petugas(
-                        rs.getLong("petugasId"),
-                        rs.getInt("petugas_nip"),
-                        rs.getString("petugas_nama"),
+                        rs.getLong("id"),
+                        rs.getInt("nip"),
+                        rs.getString("nama_lengkap"),
                         rs.getString("username"),
                         rs.getString("email"),
                         rs.getString("password"),
@@ -94,8 +89,10 @@ public class LelangDAO implements MainDAO<Lelang> {
                         rs.getInt("harga_lelang"),
                         masyarakat,
                         petugas);
+            
                 lelangList.putIfAbsent((int) lelang.getId(), new ArrayList<>());
                 lelangList.get((int) lelang.getId()).add(lelang);
+                lelang.addBarangs(new BarangDAO().findById(rs.getLong("barangId")));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,12 +102,7 @@ public class LelangDAO implements MainDAO<Lelang> {
 
     @Override
     public void create(Lelang lelang) {
-        BarangDAO dataBarang = new BarangDAO();
-        String query = """
-                INSERT INTO lelang (barangId, userId, petugasId, tgl_mulai, tgl_selesai, tgl_lelang,
-                harga_awal, harga_lelang)
-                VALUES (?,?,?,?,?,?,?,?)"
-                """;
+        String query = "INSERT INTO lelang (\"barangId\", \"userId\", \"petugasId\", tgl_mulai, tgl_selesai, tgl_lelang,harga_awal, harga_lelang) VALUES (?,?,?,?,?,?,?,?)";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
@@ -123,7 +115,7 @@ public class LelangDAO implements MainDAO<Lelang> {
                 statement.setDate(4, new java.sql.Date(lelang.getTgl_mulai().getTime()));
                 statement.setDate(5, new java.sql.Date(lelang.getTgl_selesai().getTime()));
                 statement.setDate(6, new java.sql.Date(lelang.getTgl_lelang().getTime()));
-                statement.setInt(7, dataBarang.findById(lelang.getId()).getHarga_barang());
+                statement.setInt(7, lelang.getHarga_awal());
                 statement.setInt(8, lelang.getHarga_lelang());
 
                 statement.executeUpdate();
@@ -145,11 +137,7 @@ public class LelangDAO implements MainDAO<Lelang> {
 
     @Override
     public void update(Lelang lelang) {
-        String query = """
-                UPDATE lelang SET barangId = ?, userId = ?, petugasId = ?, tgl_mulai = ?, tgl_selesai =?, tgl_lelang =?,
-                harga_awal =?, harga_lelang =?
-                WHERE id = ?
-                """;
+        String query = "UPDATE lelang SET barangId = ?, userId = ?, petugasId = ?, tgl_mulai = ?, tgl_selesai =?, tgl_lelang =?, harga_awal =?, harga_lelang =? WHERE id = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {

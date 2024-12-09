@@ -50,12 +50,7 @@ public class BarangDAO implements MainDAO<Barang> {
     @Override
     public LinkedHashMap<Integer, List<Barang>> findAll() {
         LinkedHashMap<Integer, List<Barang>> barangList = new LinkedHashMap<>();
-        String sql = """
-                    SELECT b.*, k.nama_kategori, m.nama_user
-                    FROM barang b
-                    LEFT JOIN kategori k ON b.kategoriId = k.id
-                    LEFT JOIN masyarakat m ON b.userId = m.id
-                """;
+        String sql = " SELECT * FROM barang LEFT JOIN masyarakat ON barang.\"userId\" = masyarakat.id  LEFT JOIN kategori ON barang.\"kategoriId\" = kategori.id";
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement statement = conn.prepareStatement(sql);
                 ResultSet rs = statement.executeQuery()) {
@@ -133,6 +128,12 @@ public class BarangDAO implements MainDAO<Barang> {
 
         if (conn != null) {
             try {
+
+                if ("ditutup".equalsIgnoreCase(barang.getStatus_lelang())) {
+                    barang.setStatus_lelang("belum");
+                    deleteLelangByBarangId(barang.getId());
+                }
+
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement.setLong(1, barang.getUserId());
                 statement.setLong(2, barang.getKategoriId());
@@ -179,6 +180,30 @@ public class BarangDAO implements MainDAO<Barang> {
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void deleteLelangByBarangId(long barangId) {
+        String sql = "DELETE FROM lelang WHERE barang_id = ?";
+        Connection conn = DBConnection.getConnection();
+
+        if (conn != null) {
+            try {
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setLong(1, barangId);
+                statement.executeUpdate();
+                System.out.println("Data lelang terkait berhasil dihapus.");
+            } catch (Exception e) {
+                System.out.println("Error saat menghapus data lelang: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    System.out.println("Error saat menutup koneksi: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }

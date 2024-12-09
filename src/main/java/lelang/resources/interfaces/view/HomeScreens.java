@@ -1,4 +1,4 @@
-package lelang.resources.interfaces.users;
+package lelang.resources.interfaces.view;
 
 import java.awt.*;
 // import java.awt.event.*;
@@ -86,5 +86,4 @@ public class HomeScreens extends JFrame {
 
         setLocationRelativeTo(null);
     }
-
 }

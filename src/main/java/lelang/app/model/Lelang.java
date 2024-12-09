@@ -22,9 +22,9 @@ public class Lelang {
     private static MasyarakatDAO dataUser = new MasyarakatDAO();
     private static PetugasDAO dataPetugas = new PetugasDAO();
 
-    // handling N to N Relation 
+    // handling N to N Relation
     private LinkedHashMap<Integer, List<Barang>> barangs = new LinkedHashMap<>();
-    
+
     public Lelang(long id, long barangId, long userId, long petugasId, Date tgl_mulai, Date tgl_selesai,
             Date tgl_lelang, int harga_awal, int harga_lelang, Masyarakat user, Petugas petugas) {
         this.id = id;
@@ -33,7 +33,7 @@ public class Lelang {
         this.petugasId = petugasId;
         this.tgl_mulai = tgl_mulai;
         this.tgl_selesai = tgl_selesai;
-        this.tgl_lelang = tgl_lelang;
+        this.tgl_lelang = (tgl_lelang != null) ? tgl_lelang : new Date(System.currentTimeMillis());
         this.harga_awal = harga_awal;
         this.harga_lelang = harga_lelang;
         this.user = user;
@@ -79,28 +79,51 @@ public class Lelang {
     // Relation Handlers
 
     public void addBarangs(Barang barang) {
-        this.barangs.putIfAbsent((int) barang.getUserId(), new ArrayList<>());
-        this.barangs.get((int) barang.getUserId()).add(barang);
+        this.barangs.putIfAbsent((int) barang.getId(), new ArrayList<>());
+        this.barangs.get((int) barang.getId()).add(barang);
     }
 
-    public LinkedHashMap<Integer, List<Barang>> getBarangs(){
+    public LinkedHashMap<Integer, List<Barang>> getBarangs() {
         return barangs;
     }
 
-    public Masyarakat getMasyarakat(){
-        if(user == null){
-            this.user =  dataUser.findById(this.getUserId());
+    public Masyarakat getUser() {
+        if (user == null) {
+            this.user = dataUser.findById(this.getUserId());
         }
 
         return user;
-    } 
+    }
 
-    public Petugas getPetugas(){
-        if(petugas == null){
+    public Petugas getPetugas() {
+        if (petugas == null) {
             this.petugas = dataPetugas.findById(this.getPetugasId());
         }
 
         return petugas;
     }
-    
+
+    public void displayData() {
+        this.getBarangs().forEach((id, barang) -> {
+            barang.forEach(data -> {
+                System.out.println(data.getNama_barang());
+            });
+        });
+        // System.out.println(" =========== Data Barang ============");
+        // System.out.println("Data ke -" + id);
+        // System.out.println("Nama Barang : " + barangs.get(this.getBarangId()));
+        // System.out.println("Petugas Pelelang: " + (user != null
+        // ? this.getPetugas().getNama_lengkap()
+        // : "Petugas tidak ditemukan"));
+        // System.out.println("Pemilik Barang: " +
+        // (user != null
+        // ? this.getUser().getNama_lengkap()
+        // : "Pemilik tidak ditemukan"));
+        // System.out.println("Deskripsi Barang : " + this.getDeskripsiBarang());
+        // System.out.println("Foto Barang : " + this.getFoto());
+        // System.out.println("Harga Barang : " + this.getHarga_barang());
+        // System.out.println("Status Pelelangan : " + this.getStatus_lelang());
+        // System.out.println("Status Proses : " + this.getProses_lelang());
+    }
+
 }
