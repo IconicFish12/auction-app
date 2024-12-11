@@ -16,12 +16,13 @@ public class Barang {
     private Kategori kategori;
     private Masyarakat user;
 
-    // Adding DAO Into Barang
+    // DAO // Database Access
     private static KategoriDAO dataKategori = new KategoriDAO();
     private static MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
 
     // Handling N to N Relation
     private LinkedHashMap<Integer, List<Lelang>> lelangs = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, List<Penawaran>> penawarans = new LinkedHashMap<>();
 
     public Barang(long id, long userId, long kategoriId, String nama_barang, String deskripsiBarang, int harga_barang,
             String foto, String status_lelang, String proses_lelang, Kategori kategori, Masyarakat user) {
@@ -76,30 +77,6 @@ public class Barang {
 
     public String getProses_lelang() {
         return proses_lelang;
-    }
-
-    public Kategori getKategori() {
-        if (kategori == null) {
-            this.kategori = dataKategori.findById(this.getKategoriId());
-        }
-
-        return kategori;
-    }
-
-    public Masyarakat getUser() {
-        if (user == null) {
-            this.user = dataMasyarakat.findById(this.getUserId());
-        }
-
-        return user;
-    }
-
-    public void addLelangs(Lelang lelang) {
-        this.lelangs.putIfAbsent((int) lelang.getBarangId(), new ArrayList<>());
-    }
-
-    public LinkedHashMap<Integer, List<Lelang>> getLelangs() {
-        return lelangs;
     }
 
     public void setId(long id) {
@@ -158,7 +135,43 @@ public class Barang {
         this.lelangs = lelangs;
     }
 
-    // behavior
+
+    // Relation Handler
+
+    public Kategori getKategori() {
+        if (kategori == null) {
+            this.kategori = dataKategori.findById(this.getKategoriId());
+        }
+
+        return kategori;
+    }
+
+    public Masyarakat getUser() {
+        if (user == null) {
+            this.user = dataMasyarakat.findById(this.getUserId());
+        }
+
+        return user;
+    }
+
+    public void addLelangs(Lelang lelang) {
+        this.lelangs.putIfAbsent((int) lelang.getBarangId(), new ArrayList<>());
+    }
+
+    public LinkedHashMap<Integer, List<Lelang>> getLelangs() {
+        return lelangs;
+    }
+
+    public void addPenawaran(Penawaran penawaran) {
+        this.penawarans.putIfAbsent((int) penawaran.getBarangId(), new ArrayList<>());
+        this.penawarans.get((int) penawaran.getBarangId()).add(penawaran);
+    }
+    
+    public LinkedHashMap<Integer, List<Penawaran>> getPenawarans(){
+        return penawarans;
+    }
+
+    // display data 
 
     public void displayData() {
         System.out.println(" =========== Data Barang ============");

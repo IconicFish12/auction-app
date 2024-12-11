@@ -50,7 +50,7 @@ public class BarangDAO implements MainDAO<Barang> {
     @Override
     public LinkedHashMap<Integer, List<Barang>> findAll() {
         LinkedHashMap<Integer, List<Barang>> barangList = new LinkedHashMap<>();
-        String sql = " SELECT * FROM barang LEFT JOIN masyarakat ON barang.\"userId\" = masyarakat.id  LEFT JOIN kategori ON barang.\"kategoriId\" = kategori.id";
+        String sql = "SELECT * FROM barang LEFT JOIN masyarakat ON barang.\"userId\" = masyarakat.id  LEFT JOIN kategori ON barang.\"kategoriId\" = kategori.id";
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement statement = conn.prepareStatement(sql);
                 ResultSet rs = statement.executeQuery()) {
@@ -123,7 +123,7 @@ public class BarangDAO implements MainDAO<Barang> {
 
     @Override
     public void update(Barang barang) {
-        String sql = "UPDATE barang SET userId = ?, kategoriId = ?, nama_barang = ?, deskripsiBarang = ?, hargaBarang = ?, foto = ?, status_lelang = ?, proses = ? WHERE id = ?";
+        String sql = "UPDATE barang SET \"userId\" = ?, \"kategoriId\" = ?, nama_barang = ?, \"deskripsiBarang\" = ?, \"hargaBarang\" = ?, foto = ?, status_lelang = ?, proses = ? WHERE id = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {

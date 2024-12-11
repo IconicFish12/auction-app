@@ -21,13 +21,13 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
     }
 
     @Override
-    public void create(PengajuanLelang entity) {
+    public void create(PengajuanLelang pengajuanLelang) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override
-    public void update(PengajuanLelang entity) {
+    public void update(PengajuanLelang pengajuanLelang) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }

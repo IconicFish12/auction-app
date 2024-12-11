@@ -21,13 +21,13 @@ public class OrderDAO implements MainDAO<Order>{
     }
 
     @Override
-    public void create(Order entity) {
+    public void create(Order order) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override
-    public void update(Order entity) {
+    public void update(Order order) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
@@ -36,6 +36,11 @@ public class OrderDAO implements MainDAO<Order>{
     public void delete(long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    public Order findByPenawaranId(long penawaranId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
     
 }

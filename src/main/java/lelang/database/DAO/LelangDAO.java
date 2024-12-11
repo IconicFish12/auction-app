@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import lelang.app.model.Barang;
+// import lelang.app.model.Barang;
 import lelang.app.model.Lelang;
 import lelang.app.model.Masyarakat;
 import lelang.app.model.Petugas;
@@ -137,7 +137,7 @@ public class LelangDAO implements MainDAO<Lelang> {
 
     @Override
     public void update(Lelang lelang) {
-        String query = "UPDATE lelang SET barangId = ?, userId = ?, petugasId = ?, tgl_mulai = ?, tgl_selesai =?, tgl_lelang =?, harga_awal =?, harga_lelang =? WHERE id = ?";
+        String query = "UPDATE lelang SET \"barangId \"= ?, \"userId\" = ?, \"petugasId\" = ?, tgl_mulai = ?, tgl_selesai =?, tgl_lelang =?, harga_awal =?, harga_lelang =? WHERE id = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {

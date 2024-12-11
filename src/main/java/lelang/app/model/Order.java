@@ -2,15 +2,23 @@ package lelang.app.model;
 
 import java.sql.Date;
 
+import lelang.database.DAO.PenawaranDAO;
+
 public class Order {
     private long id, penawaranId;
     private Date orderDate, deliveryDate;
     private String status, shippingAddress, shippingStatus, paymentStastus, paymentMethod;
     private int harga_akhir;
 
+    // Lazy Load // Relation Table
+    private Penawaran penawaran;
+
+    // DAO // Database Access
+    private static PenawaranDAO dataTawar = new PenawaranDAO();
+
     
     public Order(long id, long penawaranId, Date orderDate, Date deliveryDate, String status, String shippingAddress,
-            String shippingStatus, String paymentStastus, String paymentMethod, int harga_akhir) {
+            String shippingStatus, String paymentStastus, String paymentMethod, int harga_akhir, Penawaran tawar) {
         this.id = id;
         this.penawaranId = penawaranId;
         this.orderDate = orderDate;
@@ -21,6 +29,7 @@ public class Order {
         this.paymentStastus = paymentStastus;
         this.paymentMethod = paymentMethod;
         this.harga_akhir = harga_akhir;
+        this.penawaran = tawar;
     }
 
 
@@ -123,5 +132,28 @@ public class Order {
         this.harga_akhir = harga_akhir;
     }
 
-    
+    public void setPenawaran(Penawaran penawaran) {
+        this.penawaran = penawaran;
+    }
+
+
+    public static void setDataTawar(PenawaranDAO dataTawar) {
+        Order.dataTawar = dataTawar;
+    }
+
+    // relation
+
+    public Penawaran getPenawaran(){
+        if(penawaran == null){
+            this.penawaran = dataTawar.findById(this.penawaranId);
+        }
+
+        return penawaran;
+    }
+
+    // display data 
+
+    public void displayData(){
+        
+    }
 }

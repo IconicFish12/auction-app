@@ -8,9 +8,12 @@ import java.util.List;
 public class Masyarakat extends User {
     private int nik;
 
-    // Relation Barang
+    // Relation to users
     private LinkedHashMap<Integer, List<Barang>> barangs = new LinkedHashMap<>();
     private LinkedHashMap<Integer, List<Lelang>> lelangs = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, List<Penawaran>> penawarans = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, List<PengajuanLelang>> pengajuans = new LinkedHashMap<>();
+
 
     public Masyarakat(long id, int nik, String nama_lengkap, String username, String email, String password,
             String alamat, Date tanggal_lahir) {
@@ -47,7 +50,25 @@ public class Masyarakat extends User {
         return lelangs;
     }
 
-    // behavior
+    public void addPenawaran(Penawaran penawaran) {
+        this.penawarans.putIfAbsent((int) penawaran.getBarangId(), new ArrayList<>());
+        this.penawarans.get((int) penawaran.getBarangId()).add(penawaran);
+    }
+    
+    public LinkedHashMap<Integer, List<Penawaran>> getPenawarans(){
+        return penawarans;
+    }
+
+    public void addPengajuan(PengajuanLelang pengajuanLelang){
+        this.pengajuans.putIfAbsent((int) pengajuanLelang.getKategoriId(), new ArrayList<>());
+        this.pengajuans.get((int) pengajuanLelang.getKategoriId()).add(pengajuanLelang);
+    }
+
+    public LinkedHashMap<Integer, List<PengajuanLelang>> getPengajuanLelangs(){
+        return pengajuans;
+    }
+
+    // display data 
 
     public void displayData() {
         System.out.println(" =========== Data Masyarakat ============");

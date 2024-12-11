@@ -2,11 +2,22 @@ package lelang.app.model;
 
 import java.sql.Date;
 
+import lelang.database.DAO.KategoriDAO;
+import lelang.database.DAO.MasyarakatDAO;
+
 public class PengajuanLelang {
     private long id, userId, kategoriId;
     private String nama_barang, status_pengajuan;
     private int harga_lelang, harga_barang;
     private Date mulai_lelang, selesai_lelang;
+
+    // Lazy Load //Table Relation 
+    private Masyarakat user;
+    private Kategori kategori;
+
+    // DAO // Database Access
+    private static MasyarakatDAO dataUser = new MasyarakatDAO();
+    private static KategoriDAO dataKategori = new KategoriDAO();
     
     public PengajuanLelang(long id, long userId, long kategoriId, String nama_barang, String status_pengajuan,
             int harga_lelang, int harga_barang, Date mulai_lelang, Date selesai_lelang) {
@@ -91,6 +102,30 @@ public class PengajuanLelang {
 
     public void setSelesai_lelang(Date selesai_lelang) {
         this.selesai_lelang = selesai_lelang;
+    }
+
+    // Relation Handler 
+
+    public Masyarakat getUser(){
+        if(user == null){
+            this.user = dataUser.findById(this.getUserId());
+        }
+
+        return user;
+    }
+
+    public Kategori getKategori(){
+        if(kategori == null){
+            this.kategori = dataKategori.findById(this.getKategoriId());
+        }
+
+        return kategori;
+    }
+
+    // displayData
+
+    public void displayData(){
+        
     }
 
 }

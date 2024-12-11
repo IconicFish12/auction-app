@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import lelang.database.DAO.BarangDAO;
 import lelang.database.DAO.MasyarakatDAO;
 import lelang.database.DAO.PetugasDAO;
 
@@ -14,13 +15,14 @@ public class Lelang {
     private int harga_awal, harga_lelang;
 
     // Relation Lazy Load
-    // private Barang barang;
+    private Barang barang;
     private Masyarakat user;
     private Petugas petugas;
 
-    // add DAO to Lelang model
+    // DAO // Database Access
     private static MasyarakatDAO dataUser = new MasyarakatDAO();
     private static PetugasDAO dataPetugas = new PetugasDAO();
+    private static BarangDAO dataBarang = new BarangDAO();
 
     // handling N to N Relation
     private LinkedHashMap<Integer, List<Barang>> barangs = new LinkedHashMap<>();
@@ -103,27 +105,31 @@ public class Lelang {
         return petugas;
     }
 
+    // display data 
+
     public void displayData() {
-        this.getBarangs().forEach((id, barang) -> {
-            barang.forEach(data -> {
-                System.out.println(data.getNama_barang());
-            });
+        System.out.println(" =========== Data Barang Lelang ============");
+        this.getBarangs().forEach((id, record) -> {
+            barang = dataBarang.findById(id);
+            System.out.println("Data ke -" + this.getId());
+            System.out.println("Nama Barang : " + barang.getNama_barang());
+            System.out.println("Petugas Pelelang: " + (user != null
+                    ? this.getPetugas().getNama_lengkap()
+                    : "Petugas tidak ditemukan"));
+            System.out.println("Pemilik Barang: " +
+                    (user != null
+                            ? this.getUser().getNama_lengkap()
+                            : "Pemilik tidak ditemukan"));
+            System.out.println("Deskripsi Barang : " + barang.getDeskripsiBarang());
+            System.out.println("Foto Barang : " + barang.getFoto());
+            System.out.println("Harga Barang : " + barang.getHarga_barang());
+            System.out.println("Status Pelelangan : " + barang.getStatus_lelang());
+            System.out.println("Status Proses : " + barang.getProses_lelang());
+            System.out.println("waktu Pelelangan dimulai dari : " + this.getTgl_mulai() + "Sampai Tanggal" +
+                                this.getTgl_selesai());
+            System.out.println("Terlelang dengan harga " + (this.getHarga_lelang() != 0 ? this.getHarga_lelang() :
+                                "Barang Belum dilelang") + "pada tanggal " + this.getTgl_lelang());
         });
-        // System.out.println(" =========== Data Barang ============");
-        // System.out.println("Data ke -" + id);
-        // System.out.println("Nama Barang : " + barangs.get(this.getBarangId()));
-        // System.out.println("Petugas Pelelang: " + (user != null
-        // ? this.getPetugas().getNama_lengkap()
-        // : "Petugas tidak ditemukan"));
-        // System.out.println("Pemilik Barang: " +
-        // (user != null
-        // ? this.getUser().getNama_lengkap()
-        // : "Pemilik tidak ditemukan"));
-        // System.out.println("Deskripsi Barang : " + this.getDeskripsiBarang());
-        // System.out.println("Foto Barang : " + this.getFoto());
-        // System.out.println("Harga Barang : " + this.getHarga_barang());
-        // System.out.println("Status Pelelangan : " + this.getStatus_lelang());
-        // System.out.println("Status Proses : " + this.getProses_lelang());
     }
 
 }

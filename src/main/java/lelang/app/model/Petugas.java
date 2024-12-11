@@ -36,6 +36,7 @@ public class Petugas extends User {
     }
 
     // Relation Handlers
+    
     public void addLelangs(Lelang lelang){
         this.lelangs.putIfAbsent((int) lelang.getPetugasId(), new ArrayList<>());
         this.lelangs.get((int) lelang.getPetugasId()).add(lelang);
@@ -45,7 +46,7 @@ public class Petugas extends User {
         return lelangs;
     }
 
-    // behavior
+    // display data 
 
     public void displayData() {
         System.out.println(" =========== Data Petugas Lelang ============");
