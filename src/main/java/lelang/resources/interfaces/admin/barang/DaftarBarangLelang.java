@@ -6,6 +6,9 @@ import lelang.app.model.Barang;
 import lelang.database.DAO.BarangDAO;
 import lelang.mission.util.InputUtil;
 
+
+// Class untuk show daftar
+
 public class DaftarBarangLelang {
     public static void showDaftarBarangLelangByHarga(int hargaMin, int hargaMax) {
         BarangDAO barangDAO = new BarangDAO();

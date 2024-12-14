@@ -1,18 +1,19 @@
 package lelang.mission.util;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class InputUtil {
+    private static final Scanner scanner = new Scanner(System.in);
     public static String getStrInput() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            return scanner.nextLine();
-        }
+        return scanner.nextLine();
     }
     public static int getIntInput() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (!scanner.hasNextInt()) {
+        while (true) {
+            try {
+                return scanner.nextInt(); 
+            } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid. Masukkan angka!");
-                scanner.next();
+                scanner.nextLine(); // Bersihkan buffer input
             }
-            return scanner.nextInt();
         }
     }
 }
