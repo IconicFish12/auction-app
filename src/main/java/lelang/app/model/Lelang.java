@@ -7,6 +7,7 @@ import java.util.List;
 
 import lelang.database.DAO.BarangDAO;
 import lelang.database.DAO.MasyarakatDAO;
+import lelang.database.DAO.OrderDAO;
 import lelang.database.DAO.PetugasDAO;
 
 public class Lelang {
@@ -18,11 +19,13 @@ public class Lelang {
     private Barang barang;
     private Masyarakat user;
     private Petugas petugas;
+    private Order order;
 
     // DAO // Database Access
     private static MasyarakatDAO dataUser = new MasyarakatDAO();
     private static PetugasDAO dataPetugas = new PetugasDAO();
     private static BarangDAO dataBarang = new BarangDAO();
+    private static OrderDAO dataPesanan = new OrderDAO();
 
     // handling N to N Relation
     private LinkedHashMap<Integer, List<Barang>> barangs = new LinkedHashMap<>();
@@ -103,6 +106,13 @@ public class Lelang {
         }
 
         return petugas;
+    }
+
+    public Order getOrder() {
+        if (order == null) {
+            this.order = dataPesanan.findByLelangId(this.id);
+        }
+        return order;
     }
 
     // display data 
