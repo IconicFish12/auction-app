@@ -8,9 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import lelang.app.model.Barang;
-import lelang.app.model.Kategori;
 import lelang.app.model.Masyarakat;
-import lelang.app.model.Order;
 import lelang.app.model.Penawaran;
 import lelang.database.DBConnection;
 import lelang.database.MainDAO;
@@ -31,17 +29,11 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
                 ResultSet rs = statement.executeQuery();
 
                 if (rs.next()) {
-                    Barang barang = new BarangDAO().findById(rs.getLong("barangId"));
-                    Masyarakat user = new MasyarakatDAO().findById(rs.getLong("userId"));
-                    Order order = new OrderDAO().findByPenawaranId(rs.getLong("id"));
                     penawaran = new Penawaran(
                             rs.getLong("id"),
                             rs.getLong("barangId"),
                             rs.getLong("userId"),
-                            rs.getInt("harga_penawaran"),
-                            user,
-                            barang,
-                            order);
+                            rs.getInt("harga_penawaran"));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -71,42 +63,18 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
                 ResultSet rs = statement.executeQuery();
 
                 while (rs.next()) {
-                    Order order = new OrderDAO().findById(rs.getLong("id"));
-                    Kategori kategori = new Kategori(
-                            rs.getLong("kategoriId"),
-                            rs.getString("nama_kategori"));
-                    Masyarakat masyarakat = new Masyarakat(
-                            rs.getLong("id"),
-                            rs.getInt("nik"),
-                            rs.getString("nama_lengkap"),
-                            rs.getString("username"),
-                            rs.getString("email"),
-                            rs.getString("password"),
-                            rs.getString("alamat"),
-                            rs.getDate("tanggal_lahir"));
-                    Barang barang = new Barang(
-                            rs.getLong("id"),
-                            rs.getLong("userId"),
-                            rs.getLong("kategoriId"),
-                            rs.getString("nama_barang"),
-                            rs.getString("deskripsiBarang"),
-                            rs.getInt("hargaBarang"),
-                            rs.getString("foto"),
-                            rs.getString("status_lelang"),
-                            rs.getString("proses"),
-                            kategori,
-                            masyarakat);
+                    Masyarakat masyarakat = new MasyarakatDAO().findById(rs.getLong("userId"));
+                    Barang barang = new BarangDAO().findById(rs.getLong("barangId"));
                     Penawaran penawaran = new Penawaran(
                             rs.getLong("id"),
                             rs.getLong("barangId"),
                             rs.getLong("userId"),
-                            rs.getInt("harga_penawaran"),
-                            masyarakat,
-                            barang,
-                            order);
+                            rs.getInt("harga_penawaran"));
 
                     listPenawaran.putIfAbsent((int) penawaran.getId(), new ArrayList<>());
                     listPenawaran.get((int) penawaran.getId()).add(penawaran);
+
+                    masyarakat.addPenawaran(penawaran);
                     barang.addPenawaran(penawaran);
                 }
             } catch (Exception e) {
@@ -184,8 +152,28 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
 
     @Override
     public void delete(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        String query = "DELETE FROM penawaran WHERE id = ?";
+        Connection conn = DBConnection.getConnection();
+
+        if (conn != null) {
+            try {
+                PreparedStatement statement = conn.prepareStatement(query);
+
+                statement.setLong(1, id);
+
+                statement.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
     }
 
 }
