@@ -2,7 +2,6 @@ package lelang.app.model;
 
 import lelang.database.DAO.BarangDAO;
 import lelang.database.DAO.MasyarakatDAO;
-import lelang.database.DAO.OrderDAO;
 
 public class Penawaran {
     private long id, barangId, userId;
@@ -11,22 +10,17 @@ public class Penawaran {
     // Lazy Load // Relation Table
     private Masyarakat user;
     private Barang barang;
-    private Order order;
 
     // DAO // Database Access
     private static MasyarakatDAO dataUser = new MasyarakatDAO();
     private static BarangDAO dataBarang = new BarangDAO();
-    private static OrderDAO dataPesanan = new OrderDAO();
+    
 
-    public Penawaran(long id, long barangId, long userId, int harga_penawaran, 
-                        Masyarakat user, Barang barang, Order order) {
+    public Penawaran(long id, long barangId, long userId, int harga_penawaran) {
         this.id = id;
         this.barangId = barangId;
         this.userId = userId;
         this.harga_penawaran = harga_penawaran;
-        this.user = user;
-        this.barang = barang;
-        this.order = order;
     }
 
     public long getId() {
@@ -61,58 +55,24 @@ public class Penawaran {
         this.harga_penawaran = harga_penawaran;
     }
 
-    public void setUser(Masyarakat user) {
-        this.user = user;
-    }
-
-    public void setBarang(Barang barang) {
-        this.barang = barang;
-    }
-
-    public static void setDataUser(MasyarakatDAO dataUser) {
-        Penawaran.dataUser = dataUser;
-    }
-
-    public static void setDataBarang(BarangDAO dataBarang) {
-        Penawaran.dataBarang = dataBarang;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public static void setDataPesanan(OrderDAO dataPesanan) {
-        Penawaran.dataPesanan = dataPesanan;
-    }
-
-    // Relation Handler
-
     public Masyarakat getUser() {
         if (user == null) {
-            this.user = dataUser.findById(this.getUserId());
+            this.user = dataUser.findById(this.userId);
         }
         return user;
     }
 
     public Barang getBarang() {
         if (barang == null) {
-            this.barang = dataBarang.findById(this.getBarangId());
+            this.barang = dataBarang.findById(this.barangId);
         }
-
         return barang;
     }
 
-    public Order getOrder(){
-        if(order == null){
-            this.order = dataPesanan.findByPenawaranId(this.getId());
-        }
-
-        return order;
-    }
-
-    // display data 
-
-    public void displayData(){
-        
+    public void displayData() {
+        System.out.println(" =========== Data Penawaran Barang Lelang ============");
+        System.out.println("User: " + (getUser() != null ? getUser().getNama_lengkap() : "N/A"));
+        System.out.println("Barang: " + (getBarang() != null ? getBarang().getNama_barang() : "N/A"));
+        System.out.println("Harga Penawaran: " + harga_penawaran);
     }
 }

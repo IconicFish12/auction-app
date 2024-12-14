@@ -12,12 +12,18 @@ import lelang.app.model.Barang;
 import lelang.app.model.Kategori;
 import lelang.app.model.Lelang;
 import lelang.app.model.Masyarakat;
+import lelang.app.model.Order;
+import lelang.app.model.Penawaran;
+import lelang.app.model.PengajuanLelang;
 import lelang.app.model.Petugas;
 import lelang.database.DBConnection;
 import lelang.database.DAO.BarangDAO;
 import lelang.database.DAO.KategoriDAO;
 import lelang.database.DAO.LelangDAO;
 import lelang.database.DAO.MasyarakatDAO;
+import lelang.database.DAO.OrderDAO;
+import lelang.database.DAO.PenawaranDAO;
+import lelang.database.DAO.PengajuanLelangDAO;
 import lelang.database.DAO.PetugasDAO;
 // import lelang.resources.interfaces.users.HomeScreens;
 
@@ -31,11 +37,15 @@ public class Main {
                 System.out.println("Database Is Connect");
 
                 // Try Crud
-                KategoriDAO dataKategori = new KategoriDAO();
-                PetugasDAO dataPetugas = new PetugasDAO();
-                MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
                 BarangDAO dataBarang = new BarangDAO();
+                KategoriDAO dataKategori = new KategoriDAO();
                 LelangDAO dataLelang = new LelangDAO();
+                MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
+                PetugasDAO dataPetugas = new PetugasDAO();
+                PenawaranDAO dataTawar = new PenawaranDAO();
+                OrderDAO dataOrder = new OrderDAO();
+                PengajuanLelangDAO dataPengajuan = new PengajuanLelangDAO();
+
 
                 // Masyarakat inputUser = new Masyarakat(4, 10927, "Muhammad Rifki Anindita",
                 // "iki1611",
@@ -74,7 +84,7 @@ public class Main {
 
                 LinkedHashMap<Integer, List<Kategori>> kategoriList = dataKategori.findAll();
                 if (!kategoriList.isEmpty()) {
-                    System.out.println("All Kategori: ");
+                    System.out.println("Semua Kategori: ");
 
                     kategoriList.forEach((id, kategori) -> {
                         kategori.forEach(record -> {
@@ -88,7 +98,7 @@ public class Main {
 
                 LinkedHashMap<Integer, List<Masyarakat>> masyarakatList = dataMasyarakat.findAll();
                 if (!masyarakatList.isEmpty()) {
-                    System.out.println("All masyarakat: ");
+                    System.out.println("Semua Masyarakat / User: ");
                     masyarakatList.forEach((id, masyarakat) -> {
                         masyarakat.forEach(record -> {
                             record.displayData();
@@ -103,7 +113,7 @@ public class Main {
 
                 LinkedHashMap<Integer, List<Petugas>> petugasList = dataPetugas.findAll();
                 if (!petugasList.isEmpty()) {
-                    System.out.println("All Petugas: ");
+                    System.out.println("Semua Petugas Lelang: ");
                     petugasList.forEach((id, petugas) -> {
                         System.out.println("Id : " + id);
                         petugas.forEach(record -> {
@@ -142,6 +152,21 @@ public class Main {
                     });
                 } else {
                     System.out.println("Data Lelang yang diambil kosong");
+                }
+
+                LinkedHashMap<Integer, List<Penawaran>> listPenawaran = dataTawar.findAll();
+                if(!listPenawaran.isEmpty()){
+                    System.out.println("All ");
+                }
+
+                LinkedHashMap<Integer, List<Order>> listOrder = dataOrder.findAll();
+                if(!listOrder.isEmpty()){
+
+                }
+
+                LinkedHashMap<Integer, List<PengajuanLelang>> listPengajuan = dataPengajuan.findAll();
+                if (!listPengajuan.isEmpty()) {
+                    
                 }
 
                 // SwingUtilities.invokeLater(() -> {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-// import lelang.app.model.Barang;
+import lelang.app.model.Barang;
 import lelang.app.model.Lelang;
 import lelang.app.model.Masyarakat;
 import lelang.app.model.Petugas;
@@ -52,12 +52,13 @@ public class LelangDAO implements MainDAO<Lelang> {
     public LinkedHashMap<Integer, List<Lelang>> findAll() {
 
         LinkedHashMap<Integer, List<Lelang>> lelangList = new LinkedHashMap<>();
-        String query = " SELECT * FROM lelang LEFT JOIN masyarakat ON lelang.\"userId\" = masyarakat.id LEFT JOIN petugas ON lelang.\"petugasId\" = petugas.id";
+        String query = "SELECT * FROM lelang LEFT JOIN barang ON lelang.\"barangId\" = barang.id LEFT JOIN masyarakat ON lelang.\"userId\" = masyarakat.id LEFT JOIN petugas ON lelang.\"petugasId\" = petugas.id";
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement statement = conn.prepareStatement(query);
                 ResultSet rs = statement.executeQuery()) {
 
             while (rs.next()) {
+                Barang barang = new BarangDAO().findById(rs.getLong("barangId"));
                 Masyarakat masyarakat = new Masyarakat(
                         rs.getLong("id"),
                         rs.getInt("nik"),
@@ -89,10 +90,14 @@ public class LelangDAO implements MainDAO<Lelang> {
                         rs.getInt("harga_lelang"),
                         masyarakat,
                         petugas);
-            
+
                 lelangList.putIfAbsent((int) lelang.getId(), new ArrayList<>());
                 lelangList.get((int) lelang.getId()).add(lelang);
                 lelang.addBarangs(new BarangDAO().findById(rs.getLong("barangId")));
+                
+                barang.addLelangs(lelang);
+                masyarakat.addLelangs(lelang);
+                petugas.addLelangs(lelang);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -82,6 +82,10 @@ public class BarangDAO implements MainDAO<Barang> {
                         masyarakat);
                 barangList.putIfAbsent((int) barang.getId(), new ArrayList<>());
                 barangList.get((int) barang.getId()).add(barang);
+
+                kategori.addBarangs(barang);
+                masyarakat.addBarangs(barang);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
