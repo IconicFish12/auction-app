@@ -1,8 +1,5 @@
 package lelang.resources.interfaces;
-
-import javax.swing.JFrame;
-
-public class LandingPage extends JFrame {
+public class LandingPage{
     // initiate view
     public LandingPage() {
 

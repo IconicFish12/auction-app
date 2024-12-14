@@ -10,6 +10,7 @@ import java.util.List;
 import lelang.app.model.Barang;
 import lelang.app.model.Kategori;
 import lelang.app.model.Masyarakat;
+import lelang.app.model.Order;
 import lelang.app.model.Penawaran;
 import lelang.database.DBConnection;
 import lelang.database.MainDAO;
@@ -32,13 +33,15 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
                 if (rs.next()) {
                     Barang barang = new BarangDAO().findById(rs.getLong("barangId"));
                     Masyarakat user = new MasyarakatDAO().findById(rs.getLong("userId"));
+                    Order order = new OrderDAO().findByPenawaranId(rs.getLong("id"));
                     penawaran = new Penawaran(
                             rs.getLong("id"),
                             rs.getLong("barangId"),
                             rs.getLong("userId"),
                             rs.getInt("harga_penawaran"),
                             user,
-                            barang);
+                            barang,
+                            order);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -68,6 +71,7 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
                 ResultSet rs = statement.executeQuery();
 
                 while (rs.next()) {
+                    Order order = new OrderDAO().findById(rs.getLong("id"));
                     Kategori kategori = new Kategori(
                             rs.getLong("kategoriId"),
                             rs.getString("nama_kategori"));
@@ -98,10 +102,12 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
                             rs.getLong("userId"),
                             rs.getInt("harga_penawaran"),
                             masyarakat,
-                            barang);
+                            barang,
+                            order);
 
                     listPenawaran.putIfAbsent((int) penawaran.getId(), new ArrayList<>());
                     listPenawaran.get((int) penawaran.getId()).add(penawaran);
+                    barang.addPenawaran(penawaran);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
