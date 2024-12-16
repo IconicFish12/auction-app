@@ -5,10 +5,16 @@ import java.util.List;
 
 import lelang.app.model.Barang;
 import lelang.app.controller.BarangController;
+import lelang.app.controller.KategoriController;
+import lelang.database.DAO.MasyarakatDAO;
+
 import lelang.mission.util.InputUtil;
+import lelang.app.model.Kategori;
+import lelang.app.model.Masyarakat;
 
 public class BarangLelang {
     private static BarangController barangController = new BarangController();
+    private static KategoriController kategoriController = new KategoriController();
 
     public static void showBarangLelangByIdBarang(int idBarang) {
         try {
@@ -36,7 +42,7 @@ public class BarangLelang {
                 }
             }
         } catch (NullPointerException e) {
-            System.out.println("Barang dengan harga " + harga + " tidak ditemukan.");
+            System.out.println("Terjadi kesalahan saat menampilkan barang: Barang dengan harga " + harga + " tidak ditemukan.");
         } catch (Exception e) {
             System.out.println("Terjadi kesalahan saat menampilkan barang: " + e.getMessage());
         }
@@ -51,10 +57,29 @@ public class BarangLelang {
             int hargaBarang = InputUtil.getIntInput();
             System.out.print("Masukkan Deskripsi Barang: ");
             String deskripsiBarang = InputUtil.getStrInput();
-            System.out.print("Masukkan ID Kategori: ");
-            int idKategori = InputUtil.getIntInput();
+            System.out.print("Masukkan Kategori Barang: ");
+            long kategoriId = InputUtil.getLongInput();
+            System.out.print("Masukkan Foto Barang: ");
+            String foto = InputUtil.getStrInput();
+            System.out.print("Masukkan Status Lelang: ");
+            String status_lelang = InputUtil.getStrInput();
+            System.out.print("Masukkan Proses Lelang: ");
+            String proses_lelang = InputUtil.getStrInput();
 
-            Barang barang = new Barang(namaBarang, hargaBarang, deskripsiBarang, idKategori);
+            Kategori kategori = kategoriController.getKategoriById((int) kategoriId);            if (kategori == null) {
+                System.out.println("Kategori dengan ID " + kategoriId + " tidak ditemukan.");
+                return;
+            }
+            System.out.print("Masukkan ID User: ");
+            long userId = InputUtil.getLongInput();
+            Masyarakat user = new MasyarakatDAO().findById(userId);
+            if (user == null) {
+                System.out.println("User dengan ID " + userId + " tidak ditemukan.");
+                return;
+            }
+
+
+            Barang barang = new Barang(0, userId, kategoriId, namaBarang, deskripsiBarang, hargaBarang, foto, status_lelang, proses_lelang, kategori, user);
             barangController.createBarang(barang);
             System.out.println("Data barang berhasil ditambahkan.");
         } catch (Exception e) {
@@ -78,13 +103,10 @@ public class BarangLelang {
             int hargaBarang = InputUtil.getIntInput();
             System.out.print("Masukkan Deskripsi Barang Baru: ");
             String deskripsiBarang = InputUtil.getStrInput();
-             System.out.print("Masukkan ID Kategori Baru: ");
-            int idKategori = InputUtil.getIntInput();
 
-            barang.setNamaBarang(namaBarang);
-            barang.setHargaBarang(hargaBarang);
+            barang.setNama_barang(namaBarang);
+            barang.setHarga_barang(hargaBarang);
             barang.setDeskripsiBarang(deskripsiBarang);
-            barang.setIdKategori(idKategori);
             barangController.updateBarang(barang);
             System.out.println("Data barang berhasil diupdate.");
         } catch (Exception e) {

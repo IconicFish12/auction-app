@@ -1,10 +1,10 @@
 package lelang.app.controller;
 
 import java.util.Map;
-import lelang.app.model.Masyarakat;
-import lelang.app.model.Petugas;
-import lelang.database.DAO.MasyarakatDAO;
-import lelang.database.DAO.PetugasDAO;
+// import lelang.app.model.Masyarakat;
+// import lelang.app.model.Petugas;
+// import lelang.database.DAO.MasyarakatDAO;
+// import lelang.database.DAO.PetugasDAO;
 
 interface UserHandler<T> {
     void getData();
@@ -15,13 +15,13 @@ interface UserHandler<T> {
 
 public class UserController implements UserHandler<Object> {
 
-    // Model
-    private Masyarakat masyarakat;
-    private Petugas petugas;
+    // // Model
+    // private Masyarakat masyarakat;
+    // private Petugas petugas;
 
-    // DAO
-    private MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
-    private PetugasDAO dataPetugas = new PetugasDAO();
+    // // DAO
+    // private MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
+    // private PetugasDAO dataPetugas = new PetugasDAO();
 
     @Override
     public void getData() {

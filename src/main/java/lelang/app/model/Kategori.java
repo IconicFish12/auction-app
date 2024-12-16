@@ -7,21 +7,14 @@ import java.util.List;
 public class Kategori {
     private long id;
     private String namaKategori;
-    private String deskripsiKategori;
 
     // Relation to kategori
     private LinkedHashMap<Integer, List<Barang>> barangs = new LinkedHashMap<>();
     private LinkedHashMap<Integer, List<PengajuanLelang>> pengajuans = new LinkedHashMap<>();
 
-    public Kategori(long id, String namaKategori, String deskripsiKategori) {
+    public Kategori(long id, String namaKategori) {
         this.namaKategori = namaKategori;
         this.id = id;
-        this.deskripsiKategori = deskripsiKategori;
-    }
-    
-    public Kategori(String namaKategori, String deskripsiKategori) {
-        this.namaKategori = namaKategori;
-        this.deskripsiKategori = deskripsiKategori;
     }
 
     public long getId() {
@@ -38,14 +31,6 @@ public class Kategori {
 
     public void setNamaKategori(String namaKategori) {
         this.namaKategori = namaKategori;
-    }
-    
-    public String getDeskripsiKategori() {
-        return deskripsiKategori;
-    }
-
-    public void setDeskripsiKategori(String deskripsiKategori) {
-        this.deskripsiKategori = deskripsiKategori;
     }
 
     // Relation Handler
@@ -74,6 +59,7 @@ public class Kategori {
         System.out.println(" =========== Data Kategori ============");
         System.out.println("Data ke -" + id);
         System.out.println("Nama Kategori : " + namaKategori);
-        System.out.println("Deskripsi Kategori : " + deskripsiKategori);
     }
+
+
 }

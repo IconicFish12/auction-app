@@ -43,12 +43,21 @@ public class KategoriBarang {
     public static void tambahDataKategori() {
         try {
             System.out.println("============= Tambah Data Kategori =============");
+            int idKategori = 0;
+            while (true) {
+                System.out.print("Masukkan ID Kategori: ");
+                idKategori = InputUtil.getIntInput();            
+                Kategori kategoriExist = kategoriController.getKategoriById(idKategori);
+                if (kategoriExist != null) {
+                    System.out.println("Kategori dengan ID " + idKategori + " sudah ada.");
+                }else{
+                    break;
+                }
+            }
             System.out.print("Masukkan Nama Kategori: ");
             String namaKategori = InputUtil.getStrInput();
-            System.out.print("Masukkan Deskripsi Kategori: ");
-            String deskripsiKategori = InputUtil.getStrInput();
-
-            Kategori kategori = new Kategori(namaKategori, deskripsiKategori);
+            
+            Kategori kategori = new Kategori(idKategori, namaKategori);
             kategoriController.createKategori(kategori);
             System.out.println("Data kategori berhasil ditambahkan.");
         } catch (Exception e) {
@@ -68,11 +77,8 @@ public class KategoriBarang {
             }
             System.out.print("Masukkan Nama Kategori Baru: ");
             String namaKategori = InputUtil.getStrInput();
-            System.out.print("Masukkan Deskripsi Kategori Baru: ");
-            String deskripsiKategori = InputUtil.getStrInput();
 
             kategori.setNamaKategori(namaKategori);
-            kategori.setDeskripsiKategori(deskripsiKategori);
             kategoriController.updateKategori(kategori);
             System.out.println("Data kategori berhasil diupdate.");
         } catch (Exception e) {

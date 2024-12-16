@@ -2,22 +2,22 @@ package lelang.app.controller;
 
 import java.util.Map;
 
-import lelang.database.DAO.BarangDAO;
-import lelang.database.DAO.LelangDAO;
-import lelang.database.DAO.MasyarakatDAO;
-import lelang.resources.interfaces.admin.lelang.DaftarLelang;
-import lelang.resources.interfaces.admin.lelang.DaftarPenawaran;
+// import lelang.database.DAO.BarangDAO;
+// import lelang.database.DAO.LelangDAO;
+// import lelang.database.DAO.MasyarakatDAO;
+// import lelang.resources.interfaces.admin.lelang.DaftarLelang;
+// import lelang.resources.interfaces.admin.lelang.DaftarPenawaran;
 
 public class LelangController extends Controller{
 
-    // Database
-    private LelangDAO lelang = new LelangDAO();
-    private BarangDAO barang = new BarangDAO();
-    private MasyarakatDAO user = new MasyarakatDAO();
+    // // Database
+    // private LelangDAO lelang = new LelangDAO();
+    // private BarangDAO barang = new BarangDAO();
+    // private MasyarakatDAO user = new MasyarakatDAO();
 
-    // view
-    private DaftarLelang dl = new DaftarLelang();
-    private DaftarPenawaran dp = new DaftarPenawaran();
+    // // view
+    // private DaftarLelang dl = new DaftarLelang();
+    // private DaftarPenawaran dp = new DaftarPenawaran();
     
 
     @Override

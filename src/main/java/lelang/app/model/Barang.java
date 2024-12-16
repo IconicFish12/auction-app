@@ -39,13 +39,6 @@ public class Barang {
         this.user = user;
     }
     
-    public Barang(String nama_barang, int harga_barang, String deskripsiBarang, int kategoriId) {
-        this.nama_barang = nama_barang;
-        this.harga_barang = harga_barang;
-        this.deskripsiBarang = deskripsiBarang;
-        this.kategoriId = kategoriId;
-    }
-
     public long getId() {
         return id;
     }
@@ -98,7 +91,7 @@ public class Barang {
         this.kategoriId = kategoriId;
     }
 
-    public void setNamaBarang(String nama_barang) {
+    public void setNama_barang(String nama_barang) {
         this.nama_barang = nama_barang;
     }
 
@@ -118,12 +111,8 @@ public class Barang {
         this.status_lelang = status_lelang;
     }
 
-    public void setHargaBarang(int harga_barang) {
+    public void setHarga_barang(int harga_barang) {
         this.harga_barang = harga_barang;
-    }
-    
-    public void setIdKategori(int kategoriId) {
-        this.kategoriId = kategoriId;
     }
 
     public void setKategori(Kategori kategori) {

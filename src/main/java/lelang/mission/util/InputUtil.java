@@ -12,7 +12,17 @@ public class InputUtil {
                 return scanner.nextInt(); 
             } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid. Masukkan angka!");
-                scanner.nextLine(); // Bersihkan buffer input
+                scanner.nextLine();
+            }
+        }
+    }
+    public static long getLongInput() {
+        while (true) {
+            try {
+                return scanner.nextLong();
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Masukkan angka!");
+                scanner.next();
             }
         }
     }
