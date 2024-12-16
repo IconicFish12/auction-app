@@ -77,8 +77,6 @@ public class BarangLelang {
                 System.out.println("User dengan ID " + userId + " tidak ditemukan.");
                 return;
             }
-
-
             Barang barang = new Barang(0, userId, kategoriId, namaBarang, deskripsiBarang, hargaBarang, foto, status_lelang, proses_lelang, kategori, user);
             barangController.createBarang(barang);
             System.out.println("Data barang berhasil ditambahkan.");
