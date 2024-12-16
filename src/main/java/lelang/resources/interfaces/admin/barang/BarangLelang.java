@@ -5,12 +5,11 @@ import java.util.List;
 
 import lelang.app.model.Barang;
 import lelang.app.controller.BarangController;
-import lelang.app.controller.KategoriController;
-import lelang.database.DAO.MasyarakatDAO;
-
 import lelang.mission.util.InputUtil;
 import lelang.app.model.Kategori;
 import lelang.app.model.Masyarakat;
+import lelang.app.controller.KategoriController;
+import lelang.database.DAO.MasyarakatDAO;
 
 public class BarangLelang {
     private static BarangController barangController = new BarangController();
@@ -51,6 +50,13 @@ public class BarangLelang {
     public static void tambahDataBarangLelang() {
         try {
             System.out.println("============= Tambah Data Barang Lelang =============");
+            System.out.print("Masukkan ID Barang: ");
+            long idBarang = InputUtil.getLongInput();
+            Barang barangExist = barangController.getBarangByIdBarang((int) idBarang);
+            if (barangExist != null) {
+                System.out.println("Barang dengan ID " + idBarang + " sudah ada.");
+                return;
+            }
             System.out.print("Masukkan Nama Barang: ");
             String namaBarang = InputUtil.getStrInput();
             System.out.print("Masukkan Harga Barang: ");
@@ -65,19 +71,22 @@ public class BarangLelang {
             String status_lelang = InputUtil.getStrInput();
             System.out.print("Masukkan Proses Lelang: ");
             String proses_lelang = InputUtil.getStrInput();
+            System.out.print("Masukkan ID User: ");
+            long userId = InputUtil.getLongInput();
 
-            Kategori kategori = kategoriController.getKategoriById((int) kategoriId);            if (kategori == null) {
+            Kategori kategori = kategoriController.getKategoriById((int) kategoriId);
+            if (kategori == null) {
                 System.out.println("Kategori dengan ID " + kategoriId + " tidak ditemukan.");
                 return;
             }
-            System.out.print("Masukkan ID User: ");
-            long userId = InputUtil.getLongInput();
+
             Masyarakat user = new MasyarakatDAO().findById(userId);
             if (user == null) {
                 System.out.println("User dengan ID " + userId + " tidak ditemukan.");
                 return;
             }
-            Barang barang = new Barang(0, userId, kategoriId, namaBarang, deskripsiBarang, hargaBarang, foto, status_lelang, proses_lelang, kategori, user);
+
+            Barang barang = new Barang(idBarang, userId, kategoriId, namaBarang, deskripsiBarang, hargaBarang, foto, status_lelang, proses_lelang, kategori, user);
             barangController.createBarang(barang);
             System.out.println("Data barang berhasil ditambahkan.");
         } catch (Exception e) {
