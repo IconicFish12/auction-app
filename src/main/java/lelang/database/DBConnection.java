@@ -14,7 +14,6 @@ public class DBConnection {
         try {
             conn = DriverManager.getConnection(URL, USER, password);
         } catch (SQLException e) {
-            // TODO: handle exception
             System.out.println("Ada Kesalahan dalam koneksi database");
             e.printStackTrace();
         }

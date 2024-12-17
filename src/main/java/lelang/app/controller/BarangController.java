@@ -74,6 +74,15 @@ public class BarangController extends Controller {
         }
         return dataBarangNew;
     }
+    
+    public List<Barang> getAllBarang() {
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        List<Barang> allBarang = new ArrayList<>();
+        for (List<Barang> barangs : dataBarang.values()) {
+            allBarang.addAll(barangs);
+        }
+        return allBarang;
+    }
 
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {

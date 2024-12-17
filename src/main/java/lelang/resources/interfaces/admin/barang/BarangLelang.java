@@ -2,6 +2,7 @@ package lelang.resources.interfaces.admin.barang;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 import lelang.app.model.Barang;
 import lelang.app.controller.BarangController;
@@ -63,8 +64,29 @@ public class BarangLelang {
             int hargaBarang = InputUtil.getIntInput();
             System.out.print("Masukkan Deskripsi Barang: ");
             String deskripsiBarang = InputUtil.getStrInput();
-            System.out.print("Masukkan Kategori Barang: ");
-            long kategoriId = InputUtil.getLongInput();
+
+            LinkedHashMap<Integer, List<Kategori>> kategoriMap = kategoriController.getAllKategori();
+            if (kategoriMap.isEmpty()) {
+                System.out.println("Tidak ada kategori yang tersedia.");
+                return;
+            }
+            List<Kategori> listKategori = new ArrayList<>();
+            for (List<Kategori> kategoriList : kategoriMap.values()) {
+                listKategori.addAll(kategoriList);
+            }
+            System.out.println("Pilih Kategori:");
+            for (int i = 0; i < listKategori.size(); i++) {
+                System.out.println((i + 1) + ". " + listKategori.get(i).getNamaKategori());
+            }
+            System.out.print("Masukkan Pilihan >> ");
+            int pilihanKategori = InputUtil.getIntInput();
+            if (pilihanKategori < 1 || pilihanKategori > listKategori.size()) {
+                System.out.println("Pilihan tidak valid.");
+                return;
+            }
+            Kategori kategori = listKategori.get(pilihanKategori - 1);
+            long kategoriId = kategori.getId();
+
             System.out.print("Masukkan Foto Barang: ");
             String foto = InputUtil.getStrInput();
             System.out.print("Masukkan Status Lelang: ");
@@ -73,12 +95,6 @@ public class BarangLelang {
             String proses_lelang = InputUtil.getStrInput();
             System.out.print("Masukkan ID User: ");
             long userId = InputUtil.getLongInput();
-
-            Kategori kategori = kategoriController.getKategoriById((int) kategoriId);
-            if (kategori == null) {
-                System.out.println("Kategori dengan ID " + kategoriId + " tidak ditemukan.");
-                return;
-            }
 
             Masyarakat user = new MasyarakatDAO().findById(userId);
             if (user == null) {
@@ -97,13 +113,23 @@ public class BarangLelang {
     public static void updateDataBarangLelang() {
         try {
             System.out.println("============= Update Data Barang Lelang =============");
-            System.out.print("Masukkan ID Barang yang akan diupdate: ");
-            int idBarang = InputUtil.getIntInput();
-            Barang barang = barangController.getBarangByIdBarang(idBarang);
-            if (barang == null) {
-                System.out.println("Barang dengan ID " + idBarang + " tidak ditemukan.");
+            List<Barang> listBarang = barangController.getAllBarang();
+            if (listBarang.isEmpty()) {
+                System.out.println("Tidak ada barang yang tersedia untuk diupdate.");
                 return;
             }
+            System.out.println("List Barang:");
+            for (int i = 0; i < listBarang.size(); i++) {
+                System.out.println((i + 1) + ". " + listBarang.get(i).getNama_barang());
+            }
+            System.out.print("Masukkan Pilihan >> ");
+            int pilihan = InputUtil.getIntInput();
+            if (pilihan < 1 || pilihan > listBarang.size()) {
+                System.out.println("Pilihan tidak valid.");
+                return;
+            }
+            Barang barang = listBarang.get(pilihan - 1);
+            System.out.println("Akan Mengedit Barang: " + barang.getNama_barang());
             System.out.print("Masukkan Nama Barang Baru: ");
             String namaBarang = InputUtil.getStrInput();
             System.out.print("Masukkan Harga Barang Baru: ");

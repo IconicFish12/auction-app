@@ -147,6 +147,7 @@ public class BarangDAO implements MainDAO<Barang> {
                 statement.setString(6, barang.getFoto());
                 statement.setString(7, barang.getStatus_lelang());
                 statement.setString(8, barang.getproses_lelang());
+                statement.setLong(9, barang.getId());
 
                 statement.executeUpdate();
             } catch (Exception e) {
@@ -190,7 +191,7 @@ public class BarangDAO implements MainDAO<Barang> {
     }
 
     private void deleteLelangByBarangId(long barangId) {
-        String sql = "DELETE FROM lelang WHERE barang_id = ?";
+        String sql = "DELETE FROM lelang WHERE \"barangId\" = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
@@ -200,7 +201,7 @@ public class BarangDAO implements MainDAO<Barang> {
                 statement.executeUpdate();
                 System.out.println("Data lelang terkait berhasil dihapus.");
             } catch (Exception e) {
-                System.out.println("Error saat menghapus data lelang: " + e.getMessage());
+                 System.out.println("Error saat menghapus data lelang: " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 try {
