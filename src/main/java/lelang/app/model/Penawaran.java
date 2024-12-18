@@ -68,11 +68,11 @@ public class Penawaran {
         }
         return barang;
     }
-
     public void displayData() {
         System.out.println(" =========== Data Penawaran Barang Lelang ============");
         System.out.println("User: " + (getUser() != null ? getUser().getNama_lengkap() : "N/A"));
         System.out.println("Barang: " + (getBarang() != null ? getBarang().getNama_barang() : "N/A"));
         System.out.println("Harga Penawaran: " + harga_penawaran);
+        System.out.println(" =====================================================");
     }
 }

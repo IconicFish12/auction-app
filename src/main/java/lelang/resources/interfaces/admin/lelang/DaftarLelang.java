@@ -323,7 +323,4 @@ public class DaftarLelang {
         }
         return null;
     }
-    public static void main(String[] args) {
-        menu();
-    }
 }

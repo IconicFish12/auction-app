@@ -84,6 +84,10 @@ public class BarangController extends Controller {
         return allBarang;
     }
 
+    public LinkedHashMap<Integer, List<Barang>> getAllBarangMap() {
+        return barangDAO.findAll();
+    }
+
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
         // TODO Auto-generated method stub

@@ -40,22 +40,31 @@ public class KategoriBarang {
         }
     }
 
-    public static void tambahDataKategori() {
+   public static void tambahDataKategori() {
         try {
             System.out.println("============= Tambah Data Kategori =============");
             int idKategori = 0;
             while (true) {
                 System.out.print("Masukkan ID Kategori: ");
-                idKategori = InputUtil.getIntInput();            
-                Kategori kategoriExist = kategoriController.getKategoriById(idKategori);
-                if (kategoriExist != null) {
-                    System.out.println("Kategori dengan ID " + idKategori + " sudah ada.");
-                }else{
-                    break;
+                String idInput = InputUtil.getStrInput();
+                try {
+                    idKategori = Integer.parseInt(idInput);
+                    Kategori kategoriExist = kategoriController.getKategoriById(idKategori);
+                    if (kategoriExist != null) {
+                        System.out.println("Kategori dengan ID " + idKategori + " sudah ada.");
+                    } else {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("ID Kategori harus berupa angka.");
                 }
             }
             System.out.print("Masukkan Nama Kategori: ");
             String namaKategori = InputUtil.getStrInput();
+            if (namaKategori.isEmpty()) {
+                System.out.println("Nama kategori tidak boleh kosong.");
+                return;
+            }
             
             Kategori kategori = new Kategori(idKategori, namaKategori);
             kategoriController.createKategori(kategori);
@@ -68,7 +77,8 @@ public class KategoriBarang {
     public static void updateDataKategori() {
         try {
             System.out.println("============= Update Data Kategori =============");
-            System.out.print("Masukkan ID Kategori yang akan diupdate: ");
+            showAllKategori();
+            System.out.print("Pilih ID Kategori yang akan diupdate: ");
             int idKategori = InputUtil.getIntInput();
             Kategori kategori = kategoriController.getKategoriById(idKategori);
             if (kategori == null) {
@@ -89,7 +99,8 @@ public class KategoriBarang {
     public static void hapusDataKategori() {
         try {
             System.out.println("============= Hapus Data Kategori =============");
-            System.out.print("Masukkan ID Kategori yang akan dihapus: ");
+            showAllKategori();
+             System.out.print("Pilih ID Kategori yang akan dihapus: ");
             int idKategori = InputUtil.getIntInput();
             Kategori kategori = kategoriController.getKategoriById(idKategori);
             if (kategori == null) {

@@ -51,13 +51,21 @@ public class BarangLelang {
     public static void tambahDataBarangLelang() {
         try {
             System.out.println("============= Tambah Data Barang Lelang =============");
-            System.out.print("Masukkan ID Barang: ");
-            long idBarang = InputUtil.getLongInput();
-            Barang barangExist = barangController.getBarangByIdBarang((int) idBarang);
-            if (barangExist != null) {
-                System.out.println("Barang dengan ID " + idBarang + " sudah ada.");
-                return;
+            
+            // Generate ID Barang Otomatis
+            long idBarang = 1;
+            LinkedHashMap<Integer, List<Barang>> allBarang = barangController.getAllBarangMap();
+            if (!allBarang.isEmpty()) {
+                for (List<Barang> barangs : allBarang.values()) {
+                    for (Barang barang : barangs) {
+                        if (barang.getId() >= idBarang) {
+                            idBarang = barang.getId() + 1;
+                        }
+                    }
+                }
             }
+            
+            System.out.println("ID Barang: " + idBarang);
             System.out.print("Masukkan Nama Barang: ");
             String namaBarang = InputUtil.getStrInput();
             System.out.print("Masukkan Harga Barang: ");
@@ -150,14 +158,23 @@ public class BarangLelang {
     public static void hapusDataBarangLelang() {
         try {
             System.out.println("============= Hapus Data Barang Lelang =============");
-            System.out.print("Masukkan ID Barang yang akan dihapus: ");
-            int idBarang = InputUtil.getIntInput();
-            Barang barang = barangController.getBarangByIdBarang(idBarang);
-             if (barang == null) {
-                System.out.println("Barang dengan ID " + idBarang + " tidak ditemukan.");
+            List<Barang> listBarang = barangController.getAllBarang();
+            if (listBarang.isEmpty()) {
+                System.out.println("Tidak ada barang yang tersedia untuk dihapus.");
                 return;
             }
-            barangController.deleteBarang(idBarang);
+            System.out.println("List Barang:");
+            for (int i = 0; i < listBarang.size(); i++) {
+                System.out.println((i + 1) + ". " + listBarang.get(i).getNama_barang());
+            }
+            System.out.print("Masukkan Pilihan >> ");
+            int pilihan = InputUtil.getIntInput();
+            if (pilihan < 1 || pilihan > listBarang.size()) {
+                System.out.println("Pilihan tidak valid.");
+                return;
+            }
+            Barang barang = listBarang.get(pilihan - 1);
+            barangController.deleteBarang(barang.getId());
             System.out.println("Data barang berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Terjadi kesalahan saat menghapus data barang: " + e.getMessage());
@@ -214,5 +231,8 @@ public class BarangLelang {
                 System.out.println("Input tidak valid. Masukkan angka!");
             }
         }
+    }
+    public static void main(String[] args) {
+        menu();
     }
 }
