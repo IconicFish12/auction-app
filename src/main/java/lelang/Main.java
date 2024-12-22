@@ -169,9 +169,6 @@ public class Main {
                     
                 }
 
-                // SwingUtilities.invokeLater(() -> {
-                // new HomeScreens().setVisible(true);
-                // });
                 connect.close();
             } catch (Exception e) {
                 e.printStackTrace();

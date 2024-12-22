@@ -57,6 +57,24 @@ public class BarangController extends Controller {
         return barang;
     }
 
+    public List<Barang> getBarangByKategoriId(int kategoriId) {
+
+        List<Barang> barangList = new ArrayList<>();
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        for (List<Barang> barangs : dataBarang.values()) {
+            for (Barang barang : barangs) {
+                if (barang.getKategoriId() == kategoriId) {
+                    barangList.add(barang);
+                }
+            }
+        }
+        if (barangList.isEmpty()) {
+            return null;
+        }
+        return barangList;
+
+    }
+
     public LinkedHashMap<Integer, List<Barang>> getBarangByHargaBarang(int harga) {
         LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
         LinkedHashMap<Integer, List<Barang>> dataBarangNew = new LinkedHashMap<>();
@@ -73,6 +91,18 @@ public class BarangController extends Controller {
             }
         }
         return dataBarangNew;
+    }
+
+    public void showBarangByRentangHarga(int hargaMin, int hargaMax) {
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        for (Integer id : dataBarang.keySet()) {
+            List<Barang> barangs = dataBarang.get(id);
+            for (Barang barang : barangs) {
+                if (barang.getHarga_barang() >= hargaMin && barang.getHarga_barang() <= hargaMax) {
+                    barang.displayData();
+                }
+            }
+        }
     }
     
     public List<Barang> getAllBarang() {

@@ -8,10 +8,8 @@ import lelang.app.model.Kategori;
 import lelang.database.DAO.KategoriDAO;
 
 public class KategoriController extends Controller{
-
     // Database / DAO
     private KategoriDAO dataKategori = new KategoriDAO();
-
     public void createKategori(Kategori kategori) {
         try {
             dataKategori.create(kategori);

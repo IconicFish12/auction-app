@@ -3,12 +3,15 @@ package lelang.resources.interfaces.admin.barang;
 import java.util.List;
 import java.util.LinkedHashMap;
 
+import lelang.app.model.Barang;
 import lelang.app.model.Kategori;
+import lelang.app.controller.BarangController;
 import lelang.app.controller.KategoriController;
 import lelang.mission.util.InputUtil;
 
 public class KategoriBarang {
     private static KategoriController kategoriController = new KategoriController();
+    private static BarangController barangController = new BarangController();
 
     public static void showKategoriById(int idKategori) {
         try {
@@ -100,13 +103,29 @@ public class KategoriBarang {
         try {
             System.out.println("============= Hapus Data Kategori =============");
             showAllKategori();
-             System.out.print("Pilih ID Kategori yang akan dihapus: ");
+            System.out.print("Pilih ID Kategori yang akan dihapus: ");
             int idKategori = InputUtil.getIntInput();
             Kategori kategori = kategoriController.getKategoriById(idKategori);
             if (kategori == null) {
                 System.out.println("Kategori dengan ID " + idKategori + " tidak ditemukan.");
                 return;
             }
+
+            // Tambahkan konfirmasi sebelum hapus
+            System.out.println("Apakah anda yakin ingin menghapus kategori ini? (y/n)");
+            String konfirmasi = InputUtil.getStrInput();
+            if (!konfirmasi.equalsIgnoreCase("y")) {
+                System.out.println("Penghapusan dibatalkan");
+                return;
+            }
+
+            // Cek apakah kategori masih memiliki barang
+            List<Barang> barangList = barangController.getBarangByKategoriId(idKategori);
+            if (!barangList.isEmpty()) {
+                System.out.println("Kategori tidak dapat dihapus karena masih memiliki barang");
+                return;
+            }
+
             kategoriController.deleteKategori(idKategori);
             System.out.println("Data kategori berhasil dihapus.");
         } catch (Exception e) {

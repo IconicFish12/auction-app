@@ -8,9 +8,7 @@ import lelang.app.model.Lelang;
 import lelang.database.DAO.LelangDAO;
 
 public class LelangController extends Controller {
-
     private LelangDAO lelangDAO = new LelangDAO();
-
     @Override
     public void getData() {
         LinkedHashMap<Integer, List<Lelang>> dataLelang = lelangDAO.findAll();

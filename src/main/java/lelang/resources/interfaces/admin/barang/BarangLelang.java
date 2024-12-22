@@ -110,11 +110,36 @@ public class BarangLelang {
                 return;
             }
 
+            // Validasi input foto
+            if (foto == null || foto.trim().isEmpty()) {
+                System.out.println("Foto barang harus diisi");
+                return;
+            }
+
+            // Validasi harga
+            if (hargaBarang <= 0) {
+                System.out.println("Harga barang harus lebih dari 0");
+                return;
+            }
+
+            // Validasi status
+            if (!status_lelang.equalsIgnoreCase("belum") && 
+                !status_lelang.equalsIgnoreCase("berlangsung") && 
+                !status_lelang.equalsIgnoreCase("selesai")) {
+                System.out.println("Status lelang tidak valid");
+                return;
+            }
+
             Barang barang = new Barang(idBarang, userId, kategoriId, namaBarang, deskripsiBarang, hargaBarang, foto, status_lelang, proses_lelang, kategori, user);
-            barangController.createBarang(barang);
+            
+            try {
+                barangController.createBarang(barang);
+            } catch (Exception e) {
+                System.out.println("Error saat menambah barang: " + e.getMessage());
+            }
             System.out.println("Data barang berhasil ditambahkan.");
         } catch (Exception e) {
-            System.out.println("Terjadi kesalahan saat menambahkan data barang: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 

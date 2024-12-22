@@ -90,6 +90,24 @@ public class DaftarLelang {
             return;
         }
 
+        // Validasi tanggal
+        if (tglSelesai.before(tglMulai)) {
+            System.out.println("Tanggal selesai tidak boleh sebelum tanggal mulai");
+            return;
+        }
+
+        // Validasi harga
+        if (hargaLelang <= hargaAwal) {
+            System.out.println("Harga lelang harus lebih tinggi dari harga awal");
+            return;
+        }
+
+        // Validasi status barang
+        if (!barang.getStatus_lelang().equalsIgnoreCase("belum")) {
+            System.out.println("Barang ini tidak tersedia untuk dilelang");
+            return;
+        }
+
         Lelang lelang = new Lelang(0, barangId, userId, petugasId, tglMulai, tglSelesai, null, hargaAwal, hargaLelang, null, null);
 
         Map<String, Object> request = new HashMap<>();
@@ -322,5 +340,8 @@ public class DaftarLelang {
             }
         }
         return null;
+    }
+    public static void main(String[] args) {
+        menu();
     }
 }

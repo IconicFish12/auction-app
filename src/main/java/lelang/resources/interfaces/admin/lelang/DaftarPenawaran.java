@@ -82,10 +82,23 @@ public class DaftarPenawaran {
        
         Barang selectedBarang = barangs.get(selectedBarangIndex);
 
+        // Cek status lelang
+        if (!selectedBarang.getStatus_lelang().equalsIgnoreCase("berlangsung")) {
+            System.out.println("Barang tidak dalam masa lelang");
+            return;
+        }
+
         System.out.print("Masukkan ID User: ");
         long userId = InputUtil.getLongInput();
         System.out.print("Masukkan Harga Penawaran: ");
         int hargaPenawaran = InputUtil.getIntInput();
+
+        // Validasi harga penawaran
+        Penawaran penawaranTertinggi = penawaranController.getPenawaranTertinggiByBarangId(selectedBarang.getId());
+        if (penawaranTertinggi != null && hargaPenawaran <= penawaranTertinggi.getHarga_penawaran()) {
+            System.out.println("Harga penawaran harus lebih tinggi dari penawaran sebelumnya");
+            return;
+        }
 
         Penawaran penawaran = new Penawaran(0, selectedBarang.getId(), userId, hargaPenawaran);
         penawaranController.createPenawaran(penawaran);
