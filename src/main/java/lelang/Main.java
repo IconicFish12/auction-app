@@ -26,6 +26,10 @@ import lelang.database.DAO.PenawaranDAO;
 import lelang.database.DAO.PengajuanLelangDAO;
 import lelang.database.DAO.PetugasDAO;
 // import lelang.resources.interfaces.users.HomeScreens;
+// import lelang.mission.util.InputUtil;
+// import lelang.resources.view.admin.barang.BarangLelang;
+// import lelang.resources.view.admin.barang.DaftarBarangLelang;
+// import lelang.resources.view.admin.barang.KategoriBarang;
 
 public class Main {
     public static void main(String[] args) {
@@ -46,34 +50,49 @@ public class Main {
                 OrderDAO dataOrder = new OrderDAO();
                 PengajuanLelangDAO dataPengajuan = new PengajuanLelangDAO();
 
+                // Model
 
                 // Masyarakat inputUser = new Masyarakat(4, 10927, "Muhammad Rifki Anindita",
                 // "iki1611",
                 // "yeayeay@gmail.com", "password", "djashdjhgadvadqadwq",
                 // Date.valueOf("2004-10-19"));
+
                 // Kategori inputKategori = new Kategori(4, "Elektronik");
+
                 // Petugas inputPetugas = new Petugas(2, 8911823, "Sherly Mulivia", "sherAway",
                 // "sherly8890@gmail.com", "password", "asasasasa" , Date.valueOf("1999-05-24"),
                 // "petugas");
+
                 // Barang inputBarang = new Barang(5, 5, 4, "Mesin Cetak ", "jasdjadnkads",
                 // 4500000, "kadamsdasmdas", "ditutup",
                 // "belum", dataKategori.findById(4), dataMasyarakat.findById(5));
-
-                // Kategori kategori = new Kategori(1, "Elektronik" );
 
                 // Lelang inputLelang =new Lelang(1, 2, 4, 1,
                 // Date.valueOf("2024-05-24"), Date.valueOf("2024-09-24"), null,
                 // 16000000, 0,
                 // dataMasyarakat.findById(4),null);
 
+                // Penawaran inputTawar = new Penawaran(3, 2, 5, 25000000);
+
                 // Create Data
+
                 // System.out.println("=== Testing Create ===");
                 // dataKategori.create(inputKategori);
                 // dataPetugas.create(inputPetugas);
                 // dataMasyarakat.create(inputUser);
                 // dataBarang.create(inputBarang);
                 // dataLelang.create(inputLelang);
+                // dataTawar.create(inputTawar);
                 // System.out.println("Create new Data: " + data);
+
+                // Updatae Data
+
+                // dataKategori.update(inputKategori);
+                // dataPetugas.update(inputPetugas);
+                // dataMasyarakat.update(inputUser);
+                // dataBarang.update(inputBarang);
+                // dataLelang.update(inputLelang);
+                // dataTawar.update(inputTawar);
 
                 // 2. Test FindById / testing
                 // System.out.println("=== Testing FindById ===");
@@ -154,29 +173,78 @@ public class Main {
                     System.out.println("Data Lelang yang diambil kosong");
                 }
 
+                System.out.println("");
+
                 LinkedHashMap<Integer, List<Penawaran>> listPenawaran = dataTawar.findAll();
-                if(!listPenawaran.isEmpty()){
-                    System.out.println("All ");
+                if (!listPenawaran.isEmpty()) {
+                    System.out.println("Semua Penawaran :");
+                    listPenawaran.forEach((id, tawar) -> {
+                        tawar.forEach(action -> {
+                            action.displayData();
+                        });
+                        System.out.println("");
+                    });
+                } else {
+                    System.out.println("Data Tawaran yang di ambil kosong");
                 }
+
+                System.out.println("");
 
                 LinkedHashMap<Integer, List<Order>> listOrder = dataOrder.findAll();
-                if(!listOrder.isEmpty()){
-
+                if (!listOrder.isEmpty()) {
+                    System.out.println("Semua Pesanan");
+                    listOrder.forEach((id, order) -> {
+                        order.forEach(action -> {
+                            action.displayData();
+                        });
+                        System.out.println("");
+                    });
+                } else {
+                    System.out.println("Data Pesanan yang di ambil kosong");
                 }
+
+                System.out.println("");
 
                 LinkedHashMap<Integer, List<PengajuanLelang>> listPengajuan = dataPengajuan.findAll();
                 if (!listPengajuan.isEmpty()) {
-                    
+                    System.out.println("Semua pengajuan");
+                    listPengajuan.forEach((id, pengajuan) -> {
+                        pengajuan.forEach(action -> {
+                            action.displayData();
+                        });
+                        System.out.println("");
+                    });
+                } else {
+                    System.out.println("Data pengajuan yang diambil kosong");
                 }
 
+                // System.out.print(
+                //         "Menu:\n1. Menu Barang Lelang\n2. Menu Daftar Barang Lelang\n3. Menu Kategori Barang Lelang.\n0. Exit\nMasukkan Inputan >> ");
+                // int input = InputUtil.getIntInput();
+                // while (input != 0) {
+                //     if (input == 1) {
+                //         BarangLelang.menu();
+                //     } else if (input == 2) {
+                //         DaftarBarangLelang.menu();
+                //     } else if (input == 3) {
+                //         KategoriBarang.menu();
+                //     } else if (input == 0) {
+                //         break;
+                //     }
+                //     System.out.print(
+                //             "Menu:\n1. Menu Barang Lelang\n2. Menu Daftar Barang Lelang\n3. Menu Kategori Barang Lelang.\n0. Exit\nMasukkan Inputan >> ");
+                //     input = InputUtil.getIntInput();
+                // }
+                //
                 // SwingUtilities.invokeLater(() -> {
                 // new HomeScreens().setVisible(true);
                 // });
                 connect.close();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+
             }
         }
-
     }
 }

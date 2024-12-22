@@ -1,4 +1,4 @@
-package lelang.resources.interfaces.admin.lelang;
+package lelang.resources.view.admin.lelang;
 
 public class LaporanLelang {
     // initiate view 

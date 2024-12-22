@@ -59,7 +59,7 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
     @Override
     public LinkedHashMap<Integer, List<PengajuanLelang>> findAll() {
         LinkedHashMap<Integer, List<PengajuanLelang>> pengajuanList = new LinkedHashMap<>();
-        String query = "SELECT * FROM \"pengajuanLelang\" LEFT JOIN masyarakat ON \"pengajuanLelang\".\"userId\" = masyarakat.id  LEFT JOIN kategori ON \"pengajuanLelang\".\"barangId\" = kategori.id";
+        String query = "SELECT * FROM \"pengajuanLelang\" LEFT JOIN masyarakat ON \"pengajuanLelang\".\"userId\" = masyarakat.id  LEFT JOIN kategori ON \"pengajuanLelang\".\"kategoriId\" = kategori.id";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {

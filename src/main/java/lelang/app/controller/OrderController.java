@@ -1,6 +1,5 @@
 package lelang.app.controller;
 
-import java.util.Map;
 
 public class OrderController extends Controller {
 
@@ -10,12 +9,12 @@ public class OrderController extends Controller {
     }
 
     @Override
-    public <Order> void createData(Map<String, Object> request, Order order) {
+    public <Order> void createData(Order order) {
         System.out.println("Creating data Order tabel Order");
     }
 
     @Override
-    public <Order> void updateData(Map<String, Object> request, Order order) {
+    public <Order> void updateData(Order order) {
         System.out.println("Updating data Order From tabel Order");
     }
 

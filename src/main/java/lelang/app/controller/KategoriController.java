@@ -2,7 +2,6 @@ package lelang.app.controller;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import lelang.app.model.Kategori;
 import lelang.database.DAO.KategoriDAO;
@@ -58,13 +57,13 @@ public class KategoriController extends Controller{
     }
 
     @Override
-    public <T> void createData(Map<String, Object> request, T entity) {
+    public <T> void createData(T entity) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public <T> void updateData(Map<String, Object> request, T entity) {
+    public <T> void updateData(T entity) {
         // TODO Auto-generated method stub
         
     }

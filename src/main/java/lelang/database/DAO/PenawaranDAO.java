@@ -130,11 +130,11 @@ public class PenawaranDAO implements MainDAO<Penawaran> {
             try {
                 PreparedStatement statement = conn.prepareStatement(query);
 
-                statement.setLong(1, penawaran.getId());
                 statement.setLong(2, penawaran.getBarangId());
                 statement.setLong(3, penawaran.getUserId());
                 statement.setInt(4, penawaran.getHarga_penawaran());
-
+                statement.setLong(4, penawaran.getId());
+                
                 statement.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();

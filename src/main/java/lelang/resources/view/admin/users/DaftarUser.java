@@ -1,4 +1,4 @@
-package lelang.resources.interfaces.admin.users;
+package lelang.resources.view.admin.users;
 
 import javax.swing.*;
 

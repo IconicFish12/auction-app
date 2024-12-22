@@ -1,4 +1,4 @@
-package lelang.resources.interfaces.admin.barang;
+package lelang.resources.view.admin.barang;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -189,4 +189,5 @@ public class BarangLelang {
             }
         }
     }
+    
 }

@@ -1,6 +1,5 @@
 package lelang.app.controller;
 
-import java.util.Map;
 
 // import lelang.database.DAO.BarangDAO;
 // import lelang.database.DAO.LelangDAO;
@@ -26,12 +25,12 @@ public class LelangController extends Controller{
     }
 
     @Override
-    public <Lelang> void createData(Map<String, Object> request, Lelang lelang) {
+    public <Lelang> void createData(Lelang lelang) {
         System.out.println("Creating data Lelang tabel Lelang");
     }
 
     @Override
-    public <Lelang> void updateData(Map<String, Object> request, Lelang lelang) {
+    public <Lelang> void updateData(Lelang lelang) {
         System.out.println("Updating data Lelang From tabel Lelang");
     }
 

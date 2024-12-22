@@ -38,7 +38,22 @@ public class Barang {
         this.kategori = kategori;
         this.user = user;
     }
-    
+
+    public Barang(long id, long userId, long kategoriId, String nama_barang, int harga_barang,
+            String foto, String status_lelang, String proses_lelang, Kategori kategori, Masyarakat user) {
+        this.id = id;
+        this.userId = userId;
+        this.kategoriId = kategoriId;
+        this.nama_barang = nama_barang;
+        this.deskripsiBarang = "";
+        this.foto = foto;
+        this.proses_lelang = proses_lelang;
+        this.status_lelang = status_lelang;
+        this.harga_barang = harga_barang;
+        this.kategori = kategori;
+        this.user = user;
+    }
+
     public long getId() {
         return id;
     }
@@ -135,7 +150,6 @@ public class Barang {
         this.lelangs = lelangs;
     }
 
-
     // Relation Handler
 
     public Kategori getKategori() {
@@ -166,12 +180,12 @@ public class Barang {
         this.penawarans.putIfAbsent((int) penawaran.getBarangId(), new ArrayList<>());
         this.penawarans.get((int) penawaran.getBarangId()).add(penawaran);
     }
-    
-    public LinkedHashMap<Integer, List<Penawaran>> getPenawarans(){
+
+    public LinkedHashMap<Integer, List<Penawaran>> getPenawarans() {
         return penawarans;
     }
 
-    // display data 
+    // display data
 
     public void displayData() {
         System.out.println(" =========== Data Barang ============");
