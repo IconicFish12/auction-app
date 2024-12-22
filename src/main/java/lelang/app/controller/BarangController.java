@@ -3,6 +3,7 @@ package lelang.app.controller;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import lelang.app.model.Barang;
 import lelang.database.DAO.BarangDAO;
@@ -56,6 +57,24 @@ public class BarangController extends Controller {
         return barang;
     }
 
+    public List<Barang> getBarangByKategoriId(int kategoriId) {
+
+        List<Barang> barangList = new ArrayList<>();
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        for (List<Barang> barangs : dataBarang.values()) {
+            for (Barang barang : barangs) {
+                if (barang.getKategoriId() == kategoriId) {
+                    barangList.add(barang);
+                }
+            }
+        }
+        if (barangList.isEmpty()) {
+            return null;
+        }
+        return barangList;
+
+    }
+
     public LinkedHashMap<Integer, List<Barang>> getBarangByHargaBarang(int harga) {
         LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
         LinkedHashMap<Integer, List<Barang>> dataBarangNew = new LinkedHashMap<>();
@@ -74,14 +93,39 @@ public class BarangController extends Controller {
         return dataBarangNew;
     }
 
+    public void showBarangByRentangHarga(int hargaMin, int hargaMax) {
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        for (Integer id : dataBarang.keySet()) {
+            List<Barang> barangs = dataBarang.get(id);
+            for (Barang barang : barangs) {
+                if (barang.getHarga_barang() >= hargaMin && barang.getHarga_barang() <= hargaMax) {
+                    barang.displayData();
+                }
+            }
+        }
+    }
+    
+    public List<Barang> getAllBarang() {
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        List<Barang> allBarang = new ArrayList<>();
+        for (List<Barang> barangs : dataBarang.values()) {
+            allBarang.addAll(barangs);
+        }
+        return allBarang;
+    }
+
+    public LinkedHashMap<Integer, List<Barang>> getAllBarangMap() {
+        return barangDAO.findAll();
+    }
+
     @Override
-    public <T> void createData(T entity) {
+    public <T> void createData(Map<String, Object> request, T entity) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public <T> void updateData(T entity) {
+    public <T> void updateData(Map<String, Object> request, T entity) {
         // TODO Auto-generated method stub
         
     }

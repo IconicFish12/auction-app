@@ -3,12 +3,15 @@ package lelang.resources.view.admin.barang;
 import java.util.List;
 import java.util.LinkedHashMap;
 
+import lelang.app.model.Barang;
 import lelang.app.model.Kategori;
+import lelang.app.controller.BarangController;
 import lelang.app.controller.KategoriController;
 import lelang.mission.util.InputUtil;
 
 public class KategoriBarang {
     private static KategoriController kategoriController = new KategoriController();
+    private static BarangController barangController = new BarangController();
 
     public static void showKategoriById(int idKategori) {
         try {
@@ -40,22 +43,31 @@ public class KategoriBarang {
         }
     }
 
-    public static void tambahDataKategori() {
+   public static void tambahDataKategori() {
         try {
             System.out.println("============= Tambah Data Kategori =============");
             int idKategori = 0;
             while (true) {
                 System.out.print("Masukkan ID Kategori: ");
-                idKategori = InputUtil.getIntInput();            
-                Kategori kategoriExist = kategoriController.getKategoriById(idKategori);
-                if (kategoriExist != null) {
-                    System.out.println("Kategori dengan ID " + idKategori + " sudah ada.");
-                }else{
-                    break;
+                String idInput = InputUtil.getStrInput();
+                try {
+                    idKategori = Integer.parseInt(idInput);
+                    Kategori kategoriExist = kategoriController.getKategoriById(idKategori);
+                    if (kategoriExist != null) {
+                        System.out.println("Kategori dengan ID " + idKategori + " sudah ada.");
+                    } else {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("ID Kategori harus berupa angka.");
                 }
             }
             System.out.print("Masukkan Nama Kategori: ");
             String namaKategori = InputUtil.getStrInput();
+            if (namaKategori.isEmpty()) {
+                System.out.println("Nama kategori tidak boleh kosong.");
+                return;
+            }
             
             Kategori kategori = new Kategori(idKategori, namaKategori);
             kategoriController.createKategori(kategori);
@@ -68,7 +80,8 @@ public class KategoriBarang {
     public static void updateDataKategori() {
         try {
             System.out.println("============= Update Data Kategori =============");
-            System.out.print("Masukkan ID Kategori yang akan diupdate: ");
+            showAllKategori();
+            System.out.print("Pilih ID Kategori yang akan diupdate: ");
             int idKategori = InputUtil.getIntInput();
             Kategori kategori = kategoriController.getKategoriById(idKategori);
             if (kategori == null) {
@@ -89,13 +102,30 @@ public class KategoriBarang {
     public static void hapusDataKategori() {
         try {
             System.out.println("============= Hapus Data Kategori =============");
-            System.out.print("Masukkan ID Kategori yang akan dihapus: ");
+            showAllKategori();
+            System.out.print("Pilih ID Kategori yang akan dihapus: ");
             int idKategori = InputUtil.getIntInput();
             Kategori kategori = kategoriController.getKategoriById(idKategori);
             if (kategori == null) {
                 System.out.println("Kategori dengan ID " + idKategori + " tidak ditemukan.");
                 return;
             }
+
+            // Tambahkan konfirmasi sebelum hapus
+            System.out.println("Apakah anda yakin ingin menghapus kategori ini? (y/n)");
+            String konfirmasi = InputUtil.getStrInput();
+            if (!konfirmasi.equalsIgnoreCase("y")) {
+                System.out.println("Penghapusan dibatalkan");
+                return;
+            }
+
+            // Cek apakah kategori masih memiliki barang
+            List<Barang> barangList = barangController.getBarangByKategoriId(idKategori);
+            if (!barangList.isEmpty()) {
+                System.out.println("Kategori tidak dapat dihapus karena masih memiliki barang");
+                return;
+            }
+
             kategoriController.deleteKategori(idKategori);
             System.out.println("Data kategori berhasil dihapus.");
         } catch (Exception e) {

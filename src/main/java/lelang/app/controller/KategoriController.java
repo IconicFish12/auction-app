@@ -2,15 +2,14 @@ package lelang.app.controller;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import lelang.app.model.Kategori;
 import lelang.database.DAO.KategoriDAO;
 
 public class KategoriController extends Controller{
-
     // Database / DAO
     private KategoriDAO dataKategori = new KategoriDAO();
-
     public void createKategori(Kategori kategori) {
         try {
             dataKategori.create(kategori);
@@ -52,25 +51,55 @@ public class KategoriController extends Controller{
 
     @Override
     public void getData() {
-        // TODO Auto-generated method stub
-        
+        LinkedHashMap<Integer, List<Kategori>> allKategori = dataKategori.findAll();
+        if (allKategori.isEmpty()) {
+            System.out.println("Tidak ada kategori yang ditemukan.");
+        } else {
+            for (List<Kategori> kategoris : allKategori.values()) {
+                for (Kategori kategori : kategoris) {
+                    kategori.displayData();
+                }
+            }
+        }
     }
 
     @Override
-    public <T> void createData(T entity) {
-        // TODO Auto-generated method stub
-        
+    public <T> void createData(Map<String, Object> request, T entity) {
+        if (entity instanceof Kategori) {
+            Kategori kategori = (Kategori) entity;
+            try {
+                dataKategori.create(kategori);
+                System.out.println("Kategori berhasil ditambahkan melalui createData.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Error: Invalid entity type for createData.");
+        }
     }
 
     @Override
-    public <T> void updateData(T entity) {
-        // TODO Auto-generated method stub
-        
+    public <T> void updateData(Map<String, Object> request, T entity) {
+         if (entity instanceof Kategori) {
+            Kategori kategori = (Kategori) entity;
+            try {
+                dataKategori.update(kategori);
+                 System.out.println("Kategori berhasil diupdate melalui updateData.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Error: Invalid entity type for updateData.");
+        }
     }
 
     @Override
     public void deleteData(long id) {
-        // TODO Auto-generated method stub
-        
+        try {
+            dataKategori.delete(id);
+            System.out.println("Kategori berhasil dihapus melalui deleteData.");
+        } catch (Exception e) {
+             System.out.println("Error: " + e.getMessage());
+        }
     }
 }

@@ -1,26 +1,82 @@
 package lelang.app.controller;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import lelang.app.model.Order;
+import lelang.database.DAO.OrderDAO;
 
 public class OrderController extends Controller {
+    private OrderDAO orderDAO = new OrderDAO();
 
     @Override
     public void getData() {
-        System.out.println("Getting data From tabel Order");
+        LinkedHashMap<Integer, List<Order>> dataOrder = orderDAO.findAll();
+        if (dataOrder.isEmpty()) {
+            System.out.println("Tidak ada data order");
+            return;
+        }
+        for (List<Order> orders : dataOrder.values()) {
+            for (Order order : orders) {
+                order.displayData();
+            }
+        }
+    }
+
+    public void createOrder(Order order) {
+        try {
+            orderDAO.create(order);
+            System.out.println("Order berhasil ditambahkan");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void updateOrder(Order order) {
+        try {
+            orderDAO.update(order);
+            System.out.println("Order berhasil diupdate");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void deleteOrder(long id) {
+        try {
+            orderDAO.delete(id);
+            System.out.println("Order berhasil dihapus");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public Order getOrderById(long id) {
+        return orderDAO.findById(id);
+    }
+
+    public Order getOrderByLelangId(long lelangId) {
+        return orderDAO.findByLelangId(lelangId);
     }
 
     @Override
-    public <Order> void createData(Order order) {
-        System.out.println("Creating data Order tabel Order");
+    public <T> void createData(Map<String, Object> request, T entity) {
+        if (entity instanceof Order) {
+            Order order = (Order) entity;
+            createOrder(order);
+        }
     }
 
     @Override
-    public <Order> void updateData(Order order) {
-        System.out.println("Updating data Order From tabel Order");
+    public <T> void updateData(Map<String, Object> request, T entity) {
+        if (entity instanceof Order) {
+            Order order = (Order) entity;
+            updateOrder(order);
+        }
     }
 
     @Override
     public void deleteData(long id) {
-        System.out.println("Deleting data Order From tabel Order");
+        deleteOrder(id);
     }
-
 }
