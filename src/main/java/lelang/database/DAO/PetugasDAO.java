@@ -140,21 +140,21 @@ public class PetugasDAO implements MainDAO<Petugas> {
 
     @Override
     public void update(Petugas petugas) {
-        String sql = "UPDATE masyarakat SET nama_lengkap = ?, username = ?, email = ?, password = ?, alamat = ?, tanggal_lahir = ?, nik = ? WHERE id = ?";
+        String sql = "UPDATE petugas SET nama_lengkap = ?, nip = ?, username = ?, email = ?, password = ?, alamat = ?, tanggal_lahir = ?, role = ? WHERE id = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
             try {
                 PreparedStatement statement = conn.prepareStatement(sql);
-                statement.setLong(1, petugas.getId());
+                statement.setString(1, petugas.getNama_lengkap());
                 statement.setInt(2, petugas.getNip());
-                statement.setString(3, petugas.getNama_lengkap());
-                statement.setString(4, petugas.getUsername());
-                statement.setString(5, petugas.getEmail());
-                statement.setString(6, petugas.getPassword());
-                statement.setString(7, petugas.getAlamat());
-                statement.setDate(8, new java.sql.Date(petugas.getTanggal_lahir().getTime()));
-                statement.setString(9, petugas.getRole());
+                statement.setString(3, petugas.getUsername());
+                statement.setString(4, petugas.getEmail());
+                statement.setString(5, petugas.getPassword());
+                statement.setString(6, petugas.getAlamat());
+                statement.setDate(7, new java.sql.Date(petugas.getTanggal_lahir().getTime()));
+                statement.setString(8, petugas.getRole());
+                statement.setLong(9, petugas.getId());
 
                 statement.executeUpdate();
                 System.out.println("Data berhasil diubah");
