@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import lelang.app.model.Petugas;
-import lelang.database.DAO.PetugasDAO;
+import lelang.app.model.User;
+import lelang.database.DAO.UserDAO;
 
 interface UserHandler<T> {
     void getData();
@@ -14,35 +14,41 @@ interface UserHandler<T> {
     void deleteData(long id);
 }
 
-public class UserController implements UserHandler<Petugas> {
+public class UserController implements UserHandler<User> {
 
-    private PetugasDAO petugasDAO = new PetugasDAO();
+    private UserDAO userDAO = new UserDAO();
 
     @Override
     public void getData() {
-        LinkedHashMap<Integer, List<Petugas>> dataPetugas = petugasDAO.findAll();
-        for (List<Petugas> petugasList : dataPetugas.values()) {
-            for (Petugas petugas : petugasList) {
-                petugas.displayData();
+        LinkedHashMap<Integer, List<User>> dataUser = userDAO.findAllUser();
+        for (List<User> userList : dataUser.values()) {
+            for (User user : userList) {
+                System.out.println("ID: " + user.getId());
+                System.out.println("Nama Lengkap: " + user.getNama_lengkap());
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Email: " + user.getEmail());
+                 System.out.println("Alamat: " + user.getAlamat());
+                System.out.println("Tanggal Lahir: " + user.getTanggal_lahir());
+                System.out.println("--------------------");
             }
         }
     }
 
     @Override
-    public void createData(Map<String, Object> request, Petugas petugas) {
+    public void createData(Map<String, Object> request, User user) {
         try {
-            petugasDAO.create(petugas);
-            System.out.println("Petugas berhasil ditambahkan.");
+            userDAO.createUser(user);
+            System.out.println("User berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
     @Override
-    public void updateData(Map<String, Object> request, Petugas petugas) {
+    public void updateData(Map<String, Object> request, User user) {
         try {
-            petugasDAO.update(petugas);
-            System.out.println("Petugas berhasil diupdate.");
+            userDAO.updateUser(user);
+            System.out.println("User berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -51,27 +57,27 @@ public class UserController implements UserHandler<Petugas> {
     @Override
     public void deleteData(long id) {
         try {
-            petugasDAO.delete(id);
-            System.out.println("Petugas berhasil dihapus.");
+            userDAO.delete(id);
+            System.out.println("User berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
-    public Petugas getPetugasById(long id) {
-        Petugas petugas = petugasDAO.findById(id);
-        if (petugas == null) {
+    public User getUserById(long id) {
+        User user = userDAO.findUserById(id);
+        if (user == null) {
             return null;
         }
-        return petugas;
+        return user;
     }
 
-    public List<Petugas> getAllPetugas() {
-        LinkedHashMap<Integer, List<Petugas>> dataPetugas = petugasDAO.findAll();
-        List<Petugas> allPetugas = new ArrayList<>();
-        for (List<Petugas> petugasList : dataPetugas.values()) {
-            allPetugas.addAll(petugasList);
+    public List<User> getAllUser() {
+        LinkedHashMap<Integer, List<User>> dataUser = userDAO.findAllUser();
+        List<User> allUser = new ArrayList<>();
+        for (List<User> userList : dataUser.values()) {
+            allUser.addAll(userList);
         }
-        return allPetugas;
+        return allUser;
     }
 }
