@@ -294,7 +294,4 @@ public class DaftarPengajuan {
         }
         return null;
     }
-    public static void main(String[] args) {
-        menu();
-    }
 }

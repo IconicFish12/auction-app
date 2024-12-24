@@ -1,11 +1,9 @@
 package lelang.resources.interfaces.admin.barang;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import lelang.app.controller.BarangController;
 import lelang.app.model.Barang;
-import lelang.database.DAO.BarangDAO;
 import lelang.mission.util.InputUtil;
 
 
@@ -28,11 +26,9 @@ public class DaftarBarangLelang {
         barangController.showBarangByRentangHarga(hargaMin, hargaMax);
     }
     public static void showDaftarBarangLelangByStatus(String statusLelang) {
-        BarangDAO barangDAO = new BarangDAO();
-        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
-        for (Integer id : dataBarang.keySet()) {
-            List<Barang> barangs = dataBarang.get(id);
-            for (Barang barang : barangs) {
+        List<Barang> barangList = barangController.getAllBarang();
+        if (barangList != null) {
+            for (Barang barang : barangList) {
                 if (barang.getStatus_lelang().equalsIgnoreCase(statusLelang)) {
                     barang.displayData();
                 }

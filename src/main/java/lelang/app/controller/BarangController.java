@@ -117,19 +117,20 @@ public class BarangController extends Controller {
 
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
-        // TODO Auto-generated method stub
-        
+        if (entity instanceof Barang) {
+            createBarang((Barang) entity);
+        }
     }
 
     @Override
     public <T> void updateData(Map<String, Object> request, T entity) {
-        // TODO Auto-generated method stub
-        
+        if (entity instanceof Barang) {
+            updateBarang((Barang) entity);
+        }
     }
 
     @Override
     public void deleteData(long id) {
-        // TODO Auto-generated method stub
-        
+        deleteBarang(id);
     }
 }
