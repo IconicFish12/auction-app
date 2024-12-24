@@ -15,9 +15,7 @@ interface UserHandler<T> {
 }
 
 public class UserController implements UserHandler<User> {
-
     private UserDAO userDAO = new UserDAO();
-
     @Override
     public void getData() {
         LinkedHashMap<Integer, List<User>> dataUser = userDAO.findAllUser();
@@ -38,7 +36,6 @@ public class UserController implements UserHandler<User> {
     public void createData(Map<String, Object> request, User user) {
         try {
             userDAO.createUser(user);
-            System.out.println("User berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -48,7 +45,6 @@ public class UserController implements UserHandler<User> {
     public void updateData(Map<String, Object> request, User user) {
         try {
             userDAO.updateUser(user);
-            System.out.println("User berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -58,7 +54,6 @@ public class UserController implements UserHandler<User> {
     public void deleteData(long id) {
         try {
             userDAO.delete(id);
-            System.out.println("User berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

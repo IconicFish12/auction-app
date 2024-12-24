@@ -34,7 +34,6 @@ public class PetugasController implements PetugasHandler<Petugas> {
     public void createData(Map<String, Object> request, Petugas petugas) {
         try {
             petugasDAO.create(petugas);
-            System.out.println("Petugas berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -44,7 +43,6 @@ public class PetugasController implements PetugasHandler<Petugas> {
     public void updateData(Map<String, Object> request, Petugas petugas) {
         try {
             petugasDAO.update(petugas);
-            System.out.println("Petugas berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -54,7 +52,6 @@ public class PetugasController implements PetugasHandler<Petugas> {
     public void deleteData(long id) {
         try {
             petugasDAO.delete(id);
-            System.out.println("Petugas berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

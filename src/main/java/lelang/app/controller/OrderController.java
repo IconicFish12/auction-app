@@ -27,7 +27,6 @@ public class OrderController extends Controller {
     public void createOrder(Order order) {
         try {
             orderDAO.create(order);
-            System.out.println("Order berhasil ditambahkan");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -36,7 +35,6 @@ public class OrderController extends Controller {
     public void updateOrder(Order order) {
         try {
             orderDAO.update(order);
-            System.out.println("Order berhasil diupdate");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -45,7 +43,6 @@ public class OrderController extends Controller {
     public void deleteOrder(long id) {
         try {
             orderDAO.delete(id);
-            System.out.println("Order berhasil dihapus");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

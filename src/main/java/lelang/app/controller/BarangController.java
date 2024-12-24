@@ -25,7 +25,6 @@ public class BarangController extends Controller {
     public void createBarang(Barang barang) {
         try {
             barangDAO.create(barang);
-            System.out.println("Barang berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -34,7 +33,6 @@ public class BarangController extends Controller {
     public void updateBarang(Barang barang) {
         try {
             barangDAO.update(barang);
-            System.out.println("Barang berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -43,7 +41,6 @@ public class BarangController extends Controller {
     public void deleteBarang(long id) {
         try {
             barangDAO.delete(id);
-            System.out.println("Barang berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

@@ -22,7 +22,6 @@ public class LelangController extends Controller {
     public void createLelang(Lelang lelang) {
         try {
             lelangDAO.create(lelang);
-            System.out.println("Lelang berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -31,7 +30,6 @@ public class LelangController extends Controller {
     public void updateLelang(Lelang lelang) {
         try {
             lelangDAO.update(lelang);
-            System.out.println("Lelang berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -40,7 +38,6 @@ public class LelangController extends Controller {
     public void deleteLelang(long id) {
         try {
             lelangDAO.delete(id);
-            System.out.println("Lelang berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

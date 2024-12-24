@@ -134,14 +134,14 @@ public class MasyarakatDAO implements MainDAO<Masyarakat> {
         if (conn != null) {
             try {
                 PreparedStatement statement = conn.prepareStatement(sql);
-                statement.setLong(1, masyarakat.getId());
-                statement.setInt(2, masyarakat.getNik());
-                statement.setString(3, masyarakat.getNama_lengkap());
-                statement.setString(4, masyarakat.getUsername());
-                statement.setString(5, masyarakat.getEmail());
-                statement.setString(6, masyarakat.getPassword());
-                statement.setString(7, masyarakat.getAlamat());
-                statement.setDate(8, new java.sql.Date(masyarakat.getTanggal_lahir().getTime()));
+                statement.setString(1, masyarakat.getNama_lengkap());
+                statement.setString(2, masyarakat.getUsername());
+                statement.setString(3, masyarakat.getEmail());
+                statement.setString(4, masyarakat.getPassword());
+                statement.setString(5, masyarakat.getAlamat());
+                statement.setDate(6, new java.sql.Date(masyarakat.getTanggal_lahir().getTime()));
+                statement.setInt(7, masyarakat.getNik());
+                statement.setLong(8, masyarakat.getId());
 
                 statement.executeUpdate();
 

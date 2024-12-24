@@ -24,7 +24,6 @@ public class PengajuanLelangController extends Controller {
     public void createPengajuanLelang(PengajuanLelang pengajuanLelang) {
         try {
             pengajuanLelangDAO.create(pengajuanLelang);
-            System.out.println("Pengajuan lelang berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -33,7 +32,6 @@ public class PengajuanLelangController extends Controller {
     public void updatePengajuanLelang(PengajuanLelang pengajuanLelang) {
         try {
             pengajuanLelangDAO.update(pengajuanLelang);
-            System.out.println("Pengajuan lelang berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -42,7 +40,6 @@ public class PengajuanLelangController extends Controller {
     public void deletePengajuanLelang(long id) {
         try {
             pengajuanLelangDAO.delete(id);
-            System.out.println("Pengajuan lelang berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

@@ -99,16 +99,13 @@ public class DaftarUser {
         System.out.print("Tanggal Lahir (" + user.getTanggal_lahir() + "): ");
         String tanggalLahirStr = InputUtil.getStrInput();
         Date tanggalLahir = user.getTanggal_lahir();
-         if (!tanggalLahirStr.isEmpty()) {
+        if (!tanggalLahirStr.isEmpty()) {
             try {
                 tanggalLahir = new Date(DATE_FORMAT.parse(tanggalLahirStr).getTime());
             } catch (ParseException e) {
                 System.out.println("Format tanggal tidak valid. Gunakan format yyyy-MM-dd.");
                 return;
             }
-        } else {
-             System.out.println("Tanggal lahir tidak boleh kosong.");
-             return;
         }
 
         user.setNama_lengkap(namaLengkap);
@@ -186,8 +183,5 @@ public class DaftarUser {
                 System.out.println("Input tidak valid. Masukkan angka!");
             }
         }
-    }
-    public static void main(String[] args) {
-        menu();
     }
 }

@@ -34,7 +34,6 @@ public class PenawaranController extends Controller {
                 return;
             }
             penawaranDAO.create(penawaran);
-            System.out.println("Penawaran berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -43,7 +42,6 @@ public class PenawaranController extends Controller {
     public void updatePenawaran(Penawaran penawaran) {
         try {
             penawaranDAO.update(penawaran);
-            System.out.println("Penawaran berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -52,7 +50,6 @@ public class PenawaranController extends Controller {
     public void deletePenawaran(long id) {
         try {
             penawaranDAO.delete(id);
-            System.out.println("Penawaran berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
