@@ -55,19 +55,20 @@ public class PengajuanLelangController extends Controller {
 
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
-        // TODO Auto-generated method stub
-        
+        if (entity instanceof PengajuanLelang) {
+            createPengajuanLelang((PengajuanLelang) entity);
+        }
     }
 
     @Override
     public <T> void updateData(Map<String, Object> request, T entity) {
-        // TODO Auto-generated method stub
-        
+        if (entity instanceof PengajuanLelang) {
+            updatePengajuanLelang((PengajuanLelang) entity);
+        }
     }
 
     @Override
     public void deleteData(long id) {
-        // TODO Auto-generated method stub
-        
+        deletePengajuanLelang(id);
     }
 }

@@ -125,7 +125,15 @@ public class PengajuanLelang {
     // displayData
 
     public void displayData(){
-        
+        System.out.println("ID: " + this.getId());
+        System.out.println("Nama Barang: " + this.getNama_barang());
+        System.out.println("User: " + this.getUser().getNama_lengkap());
+        System.out.println("Kategori: " + this.getKategori().getNamaKategori());
+        System.out.println("Harga Barang: " + this.getHarga_barang());
+        System.out.println("Harga Lelang: " + this.getHarga_lelang());
+        System.out.println("Mulai Lelang: " + this.getMulai_lelang());
+        System.out.println("Selesai Lelang: " + this.getSelesai_lelang());
+        System.out.println("Status Pengajuan: " + this.getStatus_pengajuan());
     }
 
 }

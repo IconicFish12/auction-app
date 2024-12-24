@@ -19,7 +19,7 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
     public PengajuanLelang findById(long id) {
         PengajuanLelang pengajuanLelang = null;
 
-        String query = "SELECT * FROM penawaran WHERE id = ?";
+        String query = "SELECT * FROM \"pengajuanLelang\" WHERE id = ?";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
@@ -28,8 +28,8 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
                 statement.setLong(1, id);
 
                 ResultSet rs = statement.executeQuery();
-
-                pengajuanLelang = new PengajuanLelang(
+                if (rs.next()) {
+                    pengajuanLelang = new PengajuanLelang(
                         rs.getLong("id"),
                         rs.getLong("userId"),
                         rs.getLong("kategoriId"),
@@ -38,7 +38,9 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
                         rs.getInt("harga_lelang"),
                         rs.getInt("harga_barang"),
                         rs.getDate("mulai_lelang"),
-                        rs.getDate("Date selesai_lelang"));
+                        rs.getDate("selesai_lelang")
+                    );
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -59,7 +61,7 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
     @Override
     public LinkedHashMap<Integer, List<PengajuanLelang>> findAll() {
         LinkedHashMap<Integer, List<PengajuanLelang>> pengajuanList = new LinkedHashMap<>();
-        String query = "SELECT * FROM \"pengajuanLelang\" LEFT JOIN masyarakat ON \"pengajuanLelang\".\"userId\" = masyarakat.id  LEFT JOIN kategori ON \"pengajuanLelang\".\"barangId\" = kategori.id";
+        String query = "SELECT * FROM \"pengajuanLelang\" LEFT JOIN masyarakat ON \"pengajuanLelang\".\"userId\" = masyarakat.id  LEFT JOIN kategori ON \"pengajuanLelang\".\"kategoriId\" = kategori.id";
         Connection conn = DBConnection.getConnection();
 
         if (conn != null) {
@@ -71,15 +73,16 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
                     Masyarakat masyarakat = new MasyarakatDAO().findById(rs.getLong("userId"));
                     Kategori kategori = new KategoriDAO().findById(rs.getLong("kategoriId"));
                     PengajuanLelang pengajuanLelang = new PengajuanLelang(
-                            rs.getLong("id"),
-                            rs.getLong("userId"),
-                            rs.getLong("kategoriId"),
-                            rs.getString("nama_barang"),
-                            rs.getString("status_pengajuan"),
-                            rs.getInt("harga_lelang"),
-                            rs.getInt("harga_barang"),
-                            rs.getDate("mulai_lelang"),
-                            rs.getDate("Date selesai_lelang"));
+                        rs.getLong("id"),
+                        rs.getLong("userId"),
+                        rs.getLong("kategoriId"),
+                        rs.getString("nama_barang"),
+                        rs.getString("status_pengajuan"),
+                        rs.getInt("harga_lelang"),
+                        rs.getInt("harga_barang"),
+                        rs.getDate("mulai_lelang"),
+                        rs.getDate("selesai_lelang")
+                    );
 
                     pengajuanList.putIfAbsent((int) pengajuanLelang.getId(), new ArrayList<>());
                     pengajuanList.get((int) pengajuanLelang.getId()).add(pengajuanLelang);
@@ -116,9 +119,9 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
                 statement.setLong(1, pengajuanLelang.getUserId());
                 statement.setLong(2, pengajuanLelang.getKategoriId());
                 statement.setString(3, pengajuanLelang.getNama_barang());
-                statement.setString(4, pengajuanLelang.getStatus_pengajuan());
+                statement.setInt(4, pengajuanLelang.getHarga_barang());
                 statement.setInt(5, pengajuanLelang.getHarga_lelang());
-                statement.setInt(6, pengajuanLelang.getHarga_barang());
+                statement.setString(6, pengajuanLelang.getStatus_pengajuan());
                 statement.setDate(7, new java.sql.Date(pengajuanLelang.getMulai_lelang().getTime()));
                 statement.setDate(8, new java.sql.Date(pengajuanLelang.getSelesai_lelang().getTime()));
 
@@ -146,16 +149,15 @@ public class PengajuanLelangDAO implements MainDAO<PengajuanLelang> {
             try {
                 PreparedStatement statement = conn.prepareStatement(query);
 
-                statement.setLong(1, pengajuanLelang.getId());
-                statement.setLong(2, pengajuanLelang.getUserId());
-                statement.setLong(3, pengajuanLelang.getKategoriId());
-                statement.setString(4, pengajuanLelang.getNama_barang());
-                statement.setString(5, pengajuanLelang.getStatus_pengajuan());
-                statement.setInt(6, pengajuanLelang.getHarga_lelang());
-                statement.setInt(7, pengajuanLelang.getHarga_barang());
-                statement.setDate(8, new java.sql.Date(pengajuanLelang.getMulai_lelang().getTime()));
-                statement.setDate(9, new java.sql.Date(pengajuanLelang.getSelesai_lelang().getTime()));
-
+                statement.setLong(1, pengajuanLelang.getUserId());
+                statement.setLong(2, pengajuanLelang.getKategoriId());
+                statement.setString(3, pengajuanLelang.getNama_barang());
+                statement.setInt(4, pengajuanLelang.getHarga_barang());
+                statement.setInt(5, pengajuanLelang.getHarga_lelang());
+                statement.setString(6, pengajuanLelang.getStatus_pengajuan());
+                statement.setDate(7, new java.sql.Date(pengajuanLelang.getMulai_lelang().getTime()));
+                statement.setDate(8, new java.sql.Date(pengajuanLelang.getSelesai_lelang().getTime()));
+                statement.setLong(9, pengajuanLelang.getId());
                 statement.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
