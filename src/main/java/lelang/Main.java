@@ -1,179 +1,169 @@
 package lelang;
 
 import java.sql.Connection;
-// import java.sql.Date;
-// import java.sql.Date;
 import java.util.List;
-import java.util.LinkedHashMap;
+import java.util.Scanner;
 
-// import javax.swing.SwingUtilities;
-
-import lelang.app.model.Barang;
-import lelang.app.model.Kategori;
-import lelang.app.model.Lelang;
-import lelang.app.model.Masyarakat;
-import lelang.app.model.Order;
-import lelang.app.model.Penawaran;
-import lelang.app.model.PengajuanLelang;
+import lelang.app.controller.PetugasController;
+import lelang.app.controller.UserController;
 import lelang.app.model.Petugas;
+import lelang.app.model.User;
 import lelang.database.DBConnection;
-import lelang.database.DAO.BarangDAO;
-import lelang.database.DAO.KategoriDAO;
-import lelang.database.DAO.LelangDAO;
-import lelang.database.DAO.MasyarakatDAO;
-import lelang.database.DAO.OrderDAO;
-import lelang.database.DAO.PenawaranDAO;
-import lelang.database.DAO.PengajuanLelangDAO;
-import lelang.database.DAO.PetugasDAO;
-// import lelang.resources.interfaces.users.HomeScreens;
+import lelang.mission.util.InputUtil;
+import lelang.resources.interfaces.user.BuatPenawaran;
+import lelang.resources.interfaces.user.DaftarBarangLelang;
+import lelang.resources.interfaces.user.LihatHistoryLelang;
+import lelang.resources.interfaces.user.BuatPengajuan;
 
 public class Main {
-    public static void main(String[] args) {
+    private static long loggedInUserId = 0;
+    private static String loggedInUserRole = "";
+    private static UserController userController = new UserController();
+    private static PetugasController petugasController = new PetugasController();
+    private static Scanner scanner = new Scanner(System.in);
 
+    public static void main(String[] args) {
         Connection connect = DBConnection.getConnection();
 
         if (connect != null) {
             try {
                 System.out.println("Database Is Connect");
-
-                // Try Crud
-                BarangDAO dataBarang = new BarangDAO();
-                KategoriDAO dataKategori = new KategoriDAO();
-                LelangDAO dataLelang = new LelangDAO();
-                MasyarakatDAO dataMasyarakat = new MasyarakatDAO();
-                PetugasDAO dataPetugas = new PetugasDAO();
-                PenawaranDAO dataTawar = new PenawaranDAO();
-                OrderDAO dataOrder = new OrderDAO();
-                PengajuanLelangDAO dataPengajuan = new PengajuanLelangDAO();
-
-
-                // Masyarakat inputUser = new Masyarakat(4, 10927, "Muhammad Rifki Anindita",
-                // "iki1611",
-                // "yeayeay@gmail.com", "password", "djashdjhgadvadqadwq",
-                // Date.valueOf("2004-10-19"));
-                // Kategori inputKategori = new Kategori(4, "Elektronik");
-                // Petugas inputPetugas = new Petugas(2, 8911823, "Sherly Mulivia", "sherAway",
-                // "sherly8890@gmail.com", "password", "asasasasa" , Date.valueOf("1999-05-24"),
-                // "petugas");
-                // Barang inputBarang = new Barang(5, 5, 4, "Mesin Cetak ", "jasdjadnkads",
-                // 4500000, "kadamsdasmdas", "ditutup",
-                // "belum", dataKategori.findById(4), dataMasyarakat.findById(5));
-
-                // Kategori kategori = new Kategori(1, "Elektronik" );
-
-                // Lelang inputLelang =new Lelang(1, 2, 4, 1,
-                // Date.valueOf("2024-05-24"), Date.valueOf("2024-09-24"), null,
-                // 16000000, 0,
-                // dataMasyarakat.findById(4),null);
-
-                // Create Data
-                // System.out.println("=== Testing Create ===");
-                // dataKategori.create(inputKategori);
-                // dataPetugas.create(inputPetugas);
-                // dataMasyarakat.create(inputUser);
-                // dataBarang.create(inputBarang);
-                // dataLelang.create(inputLelang);
-                // System.out.println("Create new Data: " + data);
-
-                // 2. Test FindById / testing
-                // System.out.println("=== Testing FindById ===");
-                // Barang foundData = dataBarang.findById(2);
-                // System.out.println("Found Data by ID: " + foundData.getHarga_barang());
-
-                // 3. Test FindAll / testing
-
-                LinkedHashMap<Integer, List<Kategori>> kategoriList = dataKategori.findAll();
-                if (!kategoriList.isEmpty()) {
-                    System.out.println("Semua Kategori: ");
-
-                    kategoriList.forEach((id, kategori) -> {
-                        kategori.forEach(record -> {
-                            record.displayData();
-                        });
-                        System.out.println("");
-                    });
-                } else {
-                    System.out.println("Data kategori yang diambil kosong");
-                }
-
-                LinkedHashMap<Integer, List<Masyarakat>> masyarakatList = dataMasyarakat.findAll();
-                if (!masyarakatList.isEmpty()) {
-                    System.out.println("Semua Masyarakat / User: ");
-                    masyarakatList.forEach((id, masyarakat) -> {
-                        masyarakat.forEach(record -> {
-                            record.displayData();
-                        });
-                        System.out.println("");
-                    });
-                } else {
-                    System.out.println("Data user yang diambil kosong");
-                }
-
-                System.out.println("");
-
-                LinkedHashMap<Integer, List<Petugas>> petugasList = dataPetugas.findAll();
-                if (!petugasList.isEmpty()) {
-                    System.out.println("Semua Petugas Lelang: ");
-                    petugasList.forEach((id, petugas) -> {
-                        System.out.println("Id : " + id);
-                        petugas.forEach(record -> {
-                            record.displayData();
-                        });
-                        System.out.println("");
-                    });
-                } else {
-                    System.out.println("Data petugas yang diambil kosong");
-                }
-
-                System.out.println("");
-
-                LinkedHashMap<Integer, List<Barang>> barangList = dataBarang.findAll();
-                if (!barangList.isEmpty()) {
-                    System.out.println("All Barang: ");
-                    barangList.forEach((id, barang) -> {
-                        barang.forEach(record -> {
-                            record.displayData();
-                        });
-                        System.out.println("");
-                    });
-                } else {
-                    System.out.println("Data barang yang diambil kosong");
-                }
-
-                System.out.println("");
-
-                LinkedHashMap<Integer, List<Lelang>> lelangList = dataLelang.findAll();
-                if (!lelangList.isEmpty()) {
-                    System.out.println("All Barang Lelang: ");
-                    lelangList.forEach((id, lelang) -> {
-                        lelang.forEach(record -> {
-                            record.displayData();
-                        });
-                    });
-                } else {
-                    System.out.println("Data Lelang yang diambil kosong");
-                }
-
-                LinkedHashMap<Integer, List<Penawaran>> listPenawaran = dataTawar.findAll();
-                if(!listPenawaran.isEmpty()){
-                    System.out.println("All ");
-                }
-
-                LinkedHashMap<Integer, List<Order>> listOrder = dataOrder.findAll();
-                if(!listOrder.isEmpty()){
-
-                }
-
-                LinkedHashMap<Integer, List<PengajuanLelang>> listPengajuan = dataPengajuan.findAll();
-                if (!listPengajuan.isEmpty()) {
-                    
-                }
-
+                loginMenu();
                 connect.close();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                scanner.close();
             }
         }
+    }
 
+    private static void loginMenu() {
+        boolean keluar = false;
+        while (!keluar) {
+            System.out.println("=========== Menu Login ===========");
+            System.out.println("1. Login sebagai User");
+            System.out.println("2. Login sebagai Admin");
+            System.out.println("0. Keluar");
+            System.out.print(">> Masukkan Pilihan: ");
+            int pilihan = InputUtil.getIntInput();
+
+            switch (pilihan) {
+                case 1:
+                    login("user");
+                    if (loggedInUserId != 0) {
+                        userMenu();
+                    }
+                    break;
+                case 2:
+                    login("admin");
+                    if (loggedInUserId != 0) {
+                        adminMenu();
+                    }
+                    break;
+                case 0:
+                    keluar = true;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid!");
+            }
+        }
+    }
+
+    private static void login(String role) {
+        System.out.print("Masukkan Username: ");
+        String username = InputUtil.getStrInput();
+        System.out.print("Masukkan Password: ");
+        String password = InputUtil.getStrInput();
+
+        if (role.equals("user")) {
+            List<User> users = userController.getAllUser();
+            for (User user : users) {
+                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                    loggedInUserId = user.getId();
+                    loggedInUserRole = "user";
+                    System.out.println("Login berhasil sebagai user!");
+                    return;
+                }
+            }
+            System.out.println("Login gagal. Username atau password salah.");
+        } else if (role.equals("admin")) {
+            List<Petugas> petugass = petugasController.getAllPetugas();
+            for (Petugas petugas : petugass) {
+                 if (petugas.getUsername().equals(username) && petugas.getPassword().equals(password)) {
+                    loggedInUserId = petugas.getId();
+                    loggedInUserRole = "admin";
+                    System.out.println("Login berhasil sebagai admin!");
+                    return;
+                }
+            }
+            System.out.println("Login gagal. Username atau password salah.");
+        }
+    }
+
+    private static void userMenu() {
+        boolean keluar = false;
+        while (!keluar) {
+            System.out.println("=========== Menu User ===========");
+            System.out.println("1. Lihat daftar barang lelang (yang dibuka saja).");
+            System.out.println("2. Buat penawaran.");
+            System.out.println("3. Buat pengajuan.");
+            System.out.println("4. Lihat history pelelangan suatu barang.");
+            System.out.println("0. Logout");
+            System.out.print(">> Masukkan Pilihan: ");
+            int pilihan = InputUtil.getIntInput();
+
+            switch (pilihan) {
+                case 1:
+                    DaftarBarangLelang.showDaftarBarangLelangByStatus("dibuka");
+                    break;
+                case 2:
+                    BuatPenawaran.buatPenawaran();
+                    break;
+                case 3:
+                    BuatPengajuan.buatPengajuan();
+                    break;
+                case 4:
+                    LihatHistoryLelang.menu();
+                    break;
+                case 0:
+                    loggedInUserId = 0;
+                    loggedInUserRole = "";
+                    keluar = true;
+                    System.out.println("Logout Berhasil!");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid!");
+            }
+        }
+    }
+
+    private static void adminMenu() {
+        boolean keluar = false;
+        while (!keluar) {
+            System.out.println("=========== Menu Admin ===========");
+            System.out.println("1.  (Menu Admin)");
+            System.out.println("0. Logout");
+             System.out.print(">> Masukkan Pilihan: ");
+            int pilihan = InputUtil.getIntInput();
+
+            switch (pilihan) {
+                case 1:
+                    System.out.println("Menu Admin");
+                    break;
+                case 0:
+                    loggedInUserId = 0;
+                    loggedInUserRole = "";
+                    keluar = true;
+                    System.out.println("Logout Berhasil!");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid!");
+            }
+        }
+    }
+
+    public static long getLoggedInUserId() {
+        return loggedInUserId;
     }
 }

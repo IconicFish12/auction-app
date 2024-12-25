@@ -1,14 +1,18 @@
 package lelang.app.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import lelang.app.model.Lelang;
+import lelang.app.model.Penawaran;
 import lelang.database.DAO.LelangDAO;
+
 
 public class LelangController extends Controller {
     private LelangDAO lelangDAO = new LelangDAO();
+    private PenawaranController penawaranController = new PenawaranController();
     @Override
     public void getData() {
         LinkedHashMap<Integer, List<Lelang>> dataLelang = lelangDAO.findAll();
@@ -51,6 +55,33 @@ public class LelangController extends Controller {
         return lelang;
     }
     
+    public List<Penawaran> getHistoryLelangByBarangId(int idBarang) {
+        List<Penawaran> allPenawaran = penawaranController.getAllPenawaran();
+        List<Penawaran> penawaranList = new ArrayList<>();
+        for (Penawaran penawaran : allPenawaran) {
+            if (penawaran.getBarangId() == idBarang) {
+                penawaranList.add(penawaran);
+            }
+        }
+        if (penawaranList.isEmpty()) {
+            return null;
+        }
+        return penawaranList;
+    }
+
+    public List<Penawaran> getHistoryLelangByUserId(int idUser) {
+        List<Penawaran> allPenawaran = penawaranController.getAllPenawaran();
+        List<Penawaran> penawaranList = new ArrayList<>();
+        for (Penawaran penawaran : allPenawaran) {
+            if (penawaran.getUserId() == idUser) {
+                penawaranList.add(penawaran);
+            }
+        }
+        if (penawaranList.isEmpty()) {
+            return null;
+        }
+        return penawaranList;
+    }
 
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
