@@ -13,7 +13,6 @@ public class KategoriController extends Controller{
     public void createKategori(Kategori kategori) {
         try {
             dataKategori.create(kategori);
-            System.out.println("Kategori berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -22,7 +21,6 @@ public class KategoriController extends Controller{
     public void updateKategori(Kategori kategori) {
         try {
             dataKategori.update(kategori);
-            System.out.println("Kategori berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -31,7 +29,6 @@ public class KategoriController extends Controller{
     public void deleteKategori(long id) {
         try {
             dataKategori.delete(id);
-            System.out.println("Kategori berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -69,7 +66,6 @@ public class KategoriController extends Controller{
             Kategori kategori = (Kategori) entity;
             try {
                 dataKategori.create(kategori);
-                System.out.println("Kategori berhasil ditambahkan melalui createData.");
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
@@ -84,7 +80,6 @@ public class KategoriController extends Controller{
             Kategori kategori = (Kategori) entity;
             try {
                 dataKategori.update(kategori);
-                 System.out.println("Kategori berhasil diupdate melalui updateData.");
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
@@ -97,7 +92,6 @@ public class KategoriController extends Controller{
     public void deleteData(long id) {
         try {
             dataKategori.delete(id);
-            System.out.println("Kategori berhasil dihapus melalui deleteData.");
         } catch (Exception e) {
              System.out.println("Error: " + e.getMessage());
         }

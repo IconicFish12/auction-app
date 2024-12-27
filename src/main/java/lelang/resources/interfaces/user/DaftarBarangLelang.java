@@ -1,16 +1,14 @@
-package lelang.resources.view.admin.barang;
+package lelang.resources.interfaces.user;
 
-import java.util.List;
-
-import lelang.app.controller.BarangController;
 import lelang.app.model.Barang;
+import java.util.List;
+import lelang.app.controller.BarangController;
 import lelang.mission.util.InputUtil;
 
 
 // Class untuk show daftar
 
 public class DaftarBarangLelang {
-    // Perbaiki akses data melalui controller
     private static BarangController barangController = new BarangController();
 
     public static void showDaftarBarangLelangByHarga(int hargaMin, int hargaMax) {

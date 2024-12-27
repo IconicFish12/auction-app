@@ -159,7 +159,4 @@ public class DaftarPenawaran {
 
         penawaranController.deletePenawaran(selectedPenawaran.getId());
     }
-    public static void main(String[] args) {
-        showMenu();
-    }
 }

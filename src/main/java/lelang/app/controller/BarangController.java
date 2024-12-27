@@ -25,7 +25,6 @@ public class BarangController extends Controller {
     public void createBarang(Barang barang) {
         try {
             barangDAO.create(barang);
-            System.out.println("Barang berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -34,7 +33,6 @@ public class BarangController extends Controller {
     public void updateBarang(Barang barang) {
         try {
             barangDAO.update(barang);
-            System.out.println("Barang berhasil diupdate.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -43,7 +41,6 @@ public class BarangController extends Controller {
     public void deleteBarang(long id) {
         try {
             barangDAO.delete(id);
-            System.out.println("Barang berhasil dihapus.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -120,19 +117,20 @@ public class BarangController extends Controller {
 
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
-        // TODO Auto-generated method stub
-        
+        if (entity instanceof Barang) {
+            createBarang((Barang) entity);
+        }
     }
 
     @Override
     public <T> void updateData(Map<String, Object> request, T entity) {
-        // TODO Auto-generated method stub
-        
+        if (entity instanceof Barang) {
+            updateBarang((Barang) entity);
+        }
     }
 
     @Override
     public void deleteData(long id) {
-        // TODO Auto-generated method stub
-        
+        deleteBarang(id);
     }
 }
