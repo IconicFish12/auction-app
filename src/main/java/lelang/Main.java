@@ -139,6 +139,7 @@ public class Main {
     }
 
     private static void adminMenu() {
+        // belum gw implementasiin yang admin
         boolean keluar = false;
         while (!keluar) {
             System.out.println("=========== Menu Admin ===========");
@@ -162,7 +163,6 @@ public class Main {
             }
         }
     }
-
     public static long getLoggedInUserId() {
         return loggedInUserId;
     }
