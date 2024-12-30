@@ -58,49 +58,80 @@ public class DaftarPenawaran {
     }
 
     private static void createPenawaran() {
-        System.out.println("\n===== Tambah Penawaran =====");
-        
-        // Pilih barang
-        List<Barang> barangs = barangController.getAllBarang();
-        if (barangs.isEmpty()) {
-            System.out.println("Tidak ada barang yang tersedia untuk penawaran.");
+        System.out.println("=========== Tambah Penawaran Lelang ===========");
+        // Tampilkan daftar barang lelang yang dibuka
+        System.out.println("Daftar Barang Lelang yang Dibuka:");
+        List<Barang> barangList = barangController.getAllBarang();
+        PenawaranController penawaranController = new PenawaranController();
+        if (barangList == null) {
+            System.out.println("Tidak ada barang lelang yang dibuka saat ini.");
             return;
         }
-        System.out.println("Pilih barang untuk penawaran:");
-        for (int i = 0; i < barangs.size(); i++) {
-            System.out.println((i + 1) + ". " + barangs.get(i).getNama_barang());
-        }
-        System.out.print("Pilih nomor barang: ");
-        int selectedBarangIndex;
-        while (true) {
-            selectedBarangIndex = InputUtil.getIntInput() - 1;
-             if (selectedBarangIndex >= 0 && selectedBarangIndex < barangs.size()) {
+        boolean adaBarangDibuka = false;
+        for (Barang barang : barangList) {
+            if (barang.getStatus_lelang().equalsIgnoreCase("berlangsung")) {
+                adaBarangDibuka = true;
                 break;
             }
-            System.out.println("Pilihan tidak valid. Silakan masukkan nomor barang yang benar.");
         }
-       
-        Barang selectedBarang = barangs.get(selectedBarangIndex);
-
-        // Cek status lelang
-        if (!selectedBarang.getStatus_lelang().equalsIgnoreCase("berlangsung")) {
-            System.out.println("Barang tidak dalam masa lelang");
+        if (!adaBarangDibuka) {
+            System.out.println("Tidak ada barang lelang yang dibuka saat ini.");
             return;
         }
+        for (int i = 0; i < barangList.size(); i++) {
+            Barang barang = barangList.get(i);
+            if (barang.getStatus_lelang().equalsIgnoreCase("berlangsung")) {
+                Penawaran penawaranTertinggi = penawaranController.getPenawaranTertinggiByBarangId(barang.getId());
+                if (penawaranTertinggi != null) {
+                    System.out.println((i + 1) + ". " + barang.getNama_barang() + " - Harga Awal: " + barang.getHarga_barang() + " - Harga Tertinggi: " + penawaranTertinggi.getHarga_penawaran());
+                } else {
+                    System.out.println((i + 1) + ". " + barang.getNama_barang() + " - Harga Awal: " + barang.getHarga_barang() + " - Harga Tertinggi: Tidak Ada Penawaran");
+                }
+            }
+        }
 
-        System.out.print("Masukkan ID User: ");
-        long userId = InputUtil.getLongInput();
-        System.out.print("Masukkan Harga Penawaran: ");
+        // memilih barang
+        System.out.print("Pilih nomor barang yang ingin ditawar: ");
+        int pilihanBarang = InputUtil.getIntInput();
+        if (pilihanBarang <= 0 || pilihanBarang > barangList.size()) {
+            System.out.println("Pilihan barang tidak valid.");
+            return;
+        }
+        Barang barangPilihan = barangList.get(pilihanBarang - 1);
+
+        // Menampilkan daftar user
+        System.out.println("\n===== Daftar User =====");
+        lelang.app.controller.UserController userController = new lelang.app.controller.UserController();
+        List<lelang.app.model.User> users = userController.getAllUser();
+        if (users.isEmpty()) {
+            System.out.println("Belum ada user terdaftar.");
+            return;
+        }
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println((i + 1) + ". " + users.get(i).getNama_lengkap());
+        }
+
+        // Memilih user
+        System.out.print("Pilih nomor user: ");
+        int pilihanUser = InputUtil.getIntInput();
+        if (pilihanUser <= 0 || pilihanUser > users.size()) {
+            System.out.println("Pilihan user tidak valid.");
+            return;
+        }
+        long userId = users.get(pilihanUser - 1).getId();
+
+        System.out.print("Masukkan harga penawaran Anda: ");
         int hargaPenawaran = InputUtil.getIntInput();
 
+
         // Validasi harga penawaran
-        Penawaran penawaranTertinggi = penawaranController.getPenawaranTertinggiByBarangId(selectedBarang.getId());
+        Penawaran penawaranTertinggi = penawaranController.getPenawaranTertinggiByBarangId(barangPilihan.getId());
         if (penawaranTertinggi != null && hargaPenawaran <= penawaranTertinggi.getHarga_penawaran()) {
             System.out.println("Harga penawaran harus lebih tinggi dari penawaran sebelumnya");
             return;
         }
 
-        Penawaran penawaran = new Penawaran(0, selectedBarang.getId(), userId, hargaPenawaran);
+        Penawaran penawaran = new Penawaran(0, barangPilihan.getId(), userId, hargaPenawaran);
         penawaranController.createPenawaran(penawaran);
     }
 
@@ -156,7 +187,7 @@ public class DaftarPenawaran {
             System.out.println("Pilihan tidak valid. Silakan masukkan nomor penawaran yang benar.");
         }
         Penawaran selectedPenawaran = penawarans.get(selectedPenawaranIndex);
-
         penawaranController.deletePenawaran(selectedPenawaran.getId());
+        System.out.println("Penawaran berhasil dihapus.");
     }
 }

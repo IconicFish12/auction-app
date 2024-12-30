@@ -39,11 +39,9 @@ public class PetugasDAO implements MainDAO<Petugas> {
                             rs.getString("role")
                             );
                 }
-
                 System.out.println("Berhasil Melakukan Pengambilan Data");
             } catch (Exception e) {
                 System.out.println("Gagal melakukan pengambilan data");
-
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             } finally {
@@ -55,7 +53,6 @@ public class PetugasDAO implements MainDAO<Petugas> {
                 }
             }
         }
-
         return petugas;
     }
 

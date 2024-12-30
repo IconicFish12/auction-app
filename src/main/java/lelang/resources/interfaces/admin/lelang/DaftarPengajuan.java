@@ -1,8 +1,13 @@
 package lelang.resources.interfaces.admin.lelang;
 
+import lelang.Main;
+import lelang.app.controller.BarangController;
+import lelang.app.controller.LelangController;
 import lelang.app.controller.PengajuanLelangController;
 import lelang.app.model.Kategori;
+import lelang.app.model.Lelang;
 import lelang.app.model.Masyarakat;
+import lelang.app.model.Barang;
 import lelang.app.model.PengajuanLelang;
 import lelang.database.DAO.KategoriDAO;
 import lelang.database.DAO.MasyarakatDAO;
@@ -76,22 +81,11 @@ public class DaftarPengajuan {
             System.out.println("Harga barang harus lebih dari 0.");
             return;
         }
-        System.out.print("Harga Lelang: ");
-        int hargaLelang = InputUtil.getIntInput();
-         if (hargaLelang <= 0) {
-            System.out.println("Harga lelang harus lebih dari 0.");
-            return;
-        }
+        int hargaLelang = 0;
 
         // Validasi tanggal
         if (tglSelesai.before(tglMulai)) {
             System.out.println("Tanggal selesai tidak boleh sebelum tanggal mulai");
-            return;
-        }
-
-        // Validasi harga
-        if (hargaLelang <= hargaBarang) {
-            System.out.println("Harga lelang harus lebih tinggi dari harga barang");
             return;
         }
 
@@ -161,12 +155,8 @@ public class DaftarPengajuan {
             System.out.println("Harga barang harus lebih dari 0.");
             return;
         }
-        System.out.print("Harga Lelang: ");
-        int hargaLelang = InputUtil.getIntInput();
-         if (hargaLelang <= 0) {
-            System.out.println("Harga lelang harus lebih dari 0.");
-            return;
-        }
+        int hargaLelang = 0;
+        
 
         PengajuanLelang updatedPengajuanLelang = new PengajuanLelang(id, userId, kategoriId, namaBarang, "diajukan", hargaLelang, hargaBarang, tglMulai, tglSelesai);
         Map<String, Object> request = new HashMap<>();
@@ -183,13 +173,78 @@ public class DaftarPengajuan {
         System.out.println("Pengajuan lelang berhasil dihapus.");
         System.out.println("=== End Hapus Pengajuan Lelang ===");
     }
+    public static void approve() {
+        System.out.println("=== Approve Pengajuan Lelang ===");
+        // tampilkan barang yang sedang diajukan
+        List<PengajuanLelang> pengajuanLelangs = pengajuanLelangController.getAllPengajuanLelang();
+        if (pengajuanLelangs.isEmpty()) {
+            System.out.println("Tidak ada pengajuan lelang yang sedang diajukan.");
+            return;
+        }
+        // tampilkan pengajuan lelang yang sedang diajukan dan pilih pengajuan lelang yang akan diapprove
+        for (int i = 0; i < pengajuanLelangs.size(); i++) {
+            System.out.println((i + 1) + ". " + pengajuanLelangs.get(i).getNama_barang() + " (ID: " + pengajuanLelangs.get(i).getId() + ")");
+        }
+        System.out.print("Pilih nomor pengajuan lelang yang akan di approve: ");
+        int pilihanPengajuan = InputUtil.getIntInput();
+        if (pilihanPengajuan <= 0 || pilihanPengajuan > pengajuanLelangs.size()) {
+            System.out.println("Pilihan tidak valid.");
+            return;
+        }
+        PengajuanLelang pengajuanLelang = pengajuanLelangs.get(pilihanPengajuan - 1);
 
+
+        // update status pengajuan lelang menjadi disetujui
+        PengajuanLelang updatedPengajuanLelang = new PengajuanLelang(pengajuanLelang.getId(), pengajuanLelang.getUserId(), pengajuanLelang.getKategoriId(), pengajuanLelang.getNama_barang(), "disetujui", pengajuanLelang.getHarga_lelang(), pengajuanLelang.getHarga_barang(), pengajuanLelang.getMulai_lelang(), pengajuanLelang.getSelesai_lelang());
+        pengajuanLelangController.updatePengajuanLelang(updatedPengajuanLelang);
+
+        // Tambahkan barang ke database
+        BarangController barangController = new BarangController();
+        String foto = "-";
+        String deskripsi = "-";
+        Barang barang = new Barang(0, 
+                    pengajuanLelang.getUserId(),
+                    pengajuanLelang.getKategoriId(),
+                    pengajuanLelang.getNama_barang(),
+                    deskripsi,
+                    pengajuanLelang.getHarga_barang(),
+                    foto,
+                    "berlangsung",
+                    "belum",
+                    kategoriDAO.findById(pengajuanLelang.getKategoriId()),
+                    masyarakatDAO.findById(pengajuanLelang.getUserId())
+                );
+        barangController.createBarang(barang);
+        
+        // Get the newly generated barang ID
+        Barang createdBarang = barangController.getBarangByNama(barang.getNama_barang());
+
+        // Tambahkan pengajuan lelang ke tabel lelang di database
+        LelangController lelangController = new LelangController();
+        Lelang lelang = new Lelang(0,
+                            createdBarang.getId(),
+                            pengajuanLelang.getUserId(),
+                            Main.getLoggedInUserId(),
+                            pengajuanLelang.getMulai_lelang(),
+                            pengajuanLelang.getSelesai_lelang(),
+                            null,
+                            pengajuanLelang.getHarga_barang(),
+                            pengajuanLelang.getHarga_lelang(),
+                            null,
+                            null
+                        );
+        lelangController.createLelang(lelang);
+
+        System.out.println("Pengajuan lelang berhasil di approve, barang berhasil ditambahkan dan berhasil masuk ke pelelangan.");
+        System.out.println("=== End Approve Pengajuan Lelang ===");
+    }
     public static void showMenu() {
         System.out.println("============= Menu Pengajuan Lelang =============");
         System.out.println("1. Tampilkan Daftar Pengajuan Lelang.");
         System.out.println("2. Tambah Data Pengajuan Lelang.");
         System.out.println("3. Update Data Pengajuan Lelang.");
         System.out.println("4. Hapus Data Pengajuan Lelang.");
+        System.out.println("5. Approve Data Pengajuan Lelang.");
         System.out.println("0. Keluar.");
         System.out.println("==============================================");
     }
@@ -214,6 +269,9 @@ public class DaftarPengajuan {
                         break;
                     case 4:
                         delete();
+                        break;
+                    case 5:
+                        approve();
                         break;
                     case 0:
                         keluar = true;

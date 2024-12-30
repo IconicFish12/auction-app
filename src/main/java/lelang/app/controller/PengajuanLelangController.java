@@ -1,5 +1,6 @@
 package lelang.app.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,16 @@ public class PengajuanLelangController extends Controller {
             }
         }
     }
+
+    public List<PengajuanLelang> getAllPengajuanLelang() {
+        LinkedHashMap<Integer, List<PengajuanLelang>> dataPengajuan = pengajuanLelangDAO.findAll();
+        List<PengajuanLelang> pengajuanLelangs = new ArrayList<>();
+        for (List<PengajuanLelang> pengajuanLelangsList : dataPengajuan.values()) {
+            pengajuanLelangs.addAll(pengajuanLelangsList);
+        }
+        return pengajuanLelangs;
+    }
+
 
     public void createPengajuanLelang(PengajuanLelang pengajuanLelang) {
         try {

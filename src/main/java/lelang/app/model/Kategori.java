@@ -56,8 +56,7 @@ public class Kategori {
     // display data 
 
     public void displayData(){
-        System.out.println(" =========== Data Kategori ============");
-        System.out.println("Data ke -" + id);
+        System.out.println("ID Kategori : " + id);
         System.out.println("Nama Kategori : " + namaKategori);
     }
 

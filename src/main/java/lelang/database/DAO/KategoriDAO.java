@@ -119,8 +119,8 @@ public class KategoriDAO implements MainDAO<Kategori> {
             try {
                 PreparedStatement statement = conn.prepareStatement(query);
 
-                statement.setLong(1, kategori.getId());
-                statement.setString(2, kategori.getNamaKategori());
+                statement.setString(1, kategori.getNamaKategori());
+                statement.setLong(2, kategori.getId());
 
                 statement.executeUpdate();
             } catch (Exception e) {

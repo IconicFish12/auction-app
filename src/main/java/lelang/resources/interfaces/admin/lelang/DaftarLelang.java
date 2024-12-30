@@ -1,12 +1,11 @@
 package lelang.resources.interfaces.admin.lelang;
 
+import lelang.Main;
 import lelang.app.controller.LelangController;
 import lelang.app.model.Barang;
 import lelang.app.model.Lelang;
-import lelang.app.model.Masyarakat;
 import lelang.app.model.Petugas;
 import lelang.database.DAO.BarangDAO;
-import lelang.database.DAO.MasyarakatDAO;
 import lelang.database.DAO.PetugasDAO;
 import lelang.mission.util.InputUtil;
 
@@ -21,7 +20,6 @@ import java.util.Map;
 public class DaftarLelang {
     private static LelangController lelangController = new LelangController();
     private static BarangDAO barangDAO = new BarangDAO();
-    private static MasyarakatDAO masyarakatDAO = new MasyarakatDAO();
     private static PetugasDAO petugasDAO = new PetugasDAO();
 
     public static void view() {
@@ -33,20 +31,56 @@ public class DaftarLelang {
     public static void create() {
         System.out.println("=== Tambah Lelang ===");
 
-        // Input Barang
-        Barang barang = chooseBarang();
-        if (barang == null) return;
+        // Tampilkan barang yang status lelangnya "belum"
+        System.out.println("Pilih Barang yang akan dilelang:");
+        LinkedHashMap<Integer, List<Barang>> barangs = barangDAO.findAll();
+        if (barangs.isEmpty()) {
+            System.out.println("Tidak ada barang yang tersedia.");
+            return;
+        }
+        int i = 1;
+        for (List<Barang> barangList : barangs.values()) {
+            for (Barang barang : barangList) {
+                if (barang.getStatus_lelang().equalsIgnoreCase("belum")) {
+                    System.out.println(i + ". " + barang.getNama_barang() + " (ID: " + barang.getId() + ")");
+                    i++;
+                }
+            }
+        }
+         if (i == 1) {
+            System.out.println("Tidak ada barang dengan status 'belum' yang tersedia.");
+            return;
+        }
+        System.out.print("Pilih nomor barang: ");
+        int pilihanBarang = InputUtil.getIntInput();
+        if (pilihanBarang <= 0 || pilihanBarang >= i) {
+            System.out.println("Pilihan tidak valid.");
+            return;
+        }
+        
+        Barang barang = null;
+        int j = 1;
+        for (List<Barang> barangList : barangs.values()) {
+            for (Barang b : barangList) {
+                 if (b.getStatus_lelang().equalsIgnoreCase("belum")) {
+                    if (j == pilihanBarang) {
+                        barang = b;
+                        break;
+                    }
+                    j++;
+                }
+            }
+             if (barang != null) {
+                break;
+            }
+        }
+        if (barang == null) {
+            System.out.println("Barang tidak ditemukan.");
+            return;
+        }
         long barangId = barang.getId();
-
-        // Input User
-        Masyarakat user = chooseMasyarakat();
-        if (user == null) return;
-        long userId = user.getId();
-
-        // Input Petugas
-        Petugas petugas = choosePetugas();
-        if (petugas == null) return;
-        long petugasId = petugas.getId();
+        long userId = barang.getUserId();
+        long petugasId = Main.getLoggedInUserId();
 
 
         Date tglMulai = null;
@@ -76,7 +110,6 @@ public class DaftarLelang {
             }
         }
 
-
         System.out.print("Harga Awal: ");
         int hargaAwal = InputUtil.getIntInput();
         if (hargaAwal <= 0) {
@@ -85,8 +118,8 @@ public class DaftarLelang {
         }
         System.out.print("Harga Lelang: ");
         int hargaLelang = InputUtil.getIntInput();
-         if (hargaLelang <= 0) {
-            System.out.println("Harga lelang harus lebih dari 0.");
+         if (hargaLelang < 0) {
+            System.out.println("Harga lelang harus lebih dari -1. 0 jika belum terlelang");
             return;
         }
 
@@ -96,22 +129,22 @@ public class DaftarLelang {
             return;
         }
 
-        // Validasi harga
-        if (hargaLelang <= hargaAwal) {
-            System.out.println("Harga lelang harus lebih tinggi dari harga awal");
-            return;
-        }
-
         // Validasi status barang
         if (!barang.getStatus_lelang().equalsIgnoreCase("belum")) {
             System.out.println("Barang ini tidak tersedia untuk dilelang");
             return;
         }
-
+        
         Lelang lelang = new Lelang(0, barangId, userId, petugasId, tglMulai, tglSelesai, null, hargaAwal, hargaLelang, null, null);
 
         Map<String, Object> request = new HashMap<>();
         lelangController.createData(request, lelang);
+        
+        // Ubah status barang menjadi "berlangsung"
+        barang.setStatus_lelang("berlangsung");
+        barang.setProses_lelang("belum");
+        barangDAO.update(barang);
+
         System.out.println("Lelang berhasil ditambahkan.");
         System.out.println("=== End Tambah Lelang ===");
     }
@@ -133,11 +166,7 @@ public class DaftarLelang {
         Barang barang = chooseBarang();
         if (barang == null) return;
         long barangId = barang.getId();
-
-        // Input User
-        Masyarakat user = chooseMasyarakat();
-        if (user == null) return;
-        long userId = user.getId();
+        long userId = barang.getUserId();
 
         // Input Petugas
         Petugas petugas = choosePetugas();
@@ -178,14 +207,20 @@ public class DaftarLelang {
         }
         System.out.print("Harga Lelang: ");
         int hargaLelang = InputUtil.getIntInput();
-         if (hargaLelang <= 0) {
-            System.out.println("Harga lelang harus lebih dari 0.");
+         if (hargaLelang < 0) {
+            System.out.println("Harga lelang harus lebih dari -1. 0 jika belum terlelang");
             return;
         }
 
         Lelang updatedLelang = new Lelang(id, barangId, userId, petugasId, tglMulai, tglSelesai, null, hargaAwal, hargaLelang, null, null);
         Map<String, Object> request = new HashMap<>();
         lelangController.updateData(request, updatedLelang);
+
+        // Ubah status barang menjadi "berlangsung"
+        barang.setStatus_lelang("berlangsung");
+        barang.setProses_lelang("belum");
+        barangDAO.update(barang);
+
         System.out.println("Lelang berhasil diupdate.");
         System.out.println("=== End Update Lelang ===");
     }
@@ -271,38 +306,6 @@ public class DaftarLelang {
             for (Barang barang : barangList) {
                 if (i == pilihanBarang) {
                     return barang;
-                }
-                i++;
-            }
-        }
-        return null;
-    }
-
-    private static Masyarakat chooseMasyarakat() {
-         System.out.println("Pilih User:");
-        LinkedHashMap<Integer, List<Masyarakat>> users = masyarakatDAO.findAll();
-         if (users.isEmpty()) {
-            System.out.println("Tidak ada user yang tersedia.");
-            return null;
-        }
-        int i = 1;
-        for (List<Masyarakat> masyarakatList : users.values()) {
-            for (Masyarakat masyarakat : masyarakatList) {
-                System.out.println(i + ". " + masyarakat.getNama_lengkap() + " (ID: " + masyarakat.getId() + ")");
-                i++;
-            }
-        }
-        System.out.print("Pilih nomor user: ");
-        int pilihanUser = InputUtil.getIntInput();
-         if (pilihanUser <= 0 || pilihanUser > users.size()) {
-            System.out.println("Pilihan tidak valid.");
-            return null;
-        }
-        i = 1;
-        for (List<Masyarakat> masyarakatList : users.values()) {
-            for (Masyarakat masyarakat : masyarakatList) {
-                if (i == pilihanUser) {
-                    return masyarakat;
                 }
                 i++;
             }

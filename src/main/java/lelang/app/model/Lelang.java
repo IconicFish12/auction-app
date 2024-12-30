@@ -102,9 +102,8 @@ public class Lelang {
 
     public Petugas getPetugas() {
         if (petugas == null) {
-            this.petugas = dataPetugas.findById(this.getPetugasId());
+            this.petugas = dataPetugas.findById(this.petugasId);
         }
-
         return petugas;
     }
 
@@ -123,7 +122,7 @@ public class Lelang {
             barang = dataBarang.findById(id);
             System.out.println("Data ke -" + this.getId());
             System.out.println("Nama Barang : " + barang.getNama_barang());
-            System.out.println("Petugas Pelelang: " + (user != null
+            System.out.println("Petugas Pelelang: " + (petugas != null
                     ? this.getPetugas().getNama_lengkap()
                     : "Petugas tidak ditemukan"));
             System.out.println("Pemilik Barang: " +
@@ -135,10 +134,10 @@ public class Lelang {
             System.out.println("Harga Barang : " + barang.getHarga_barang());
             System.out.println("Status Pelelangan : " + barang.getStatus_lelang());
             System.out.println("Status Proses : " + barang.getProses_lelang());
-            System.out.println("waktu Pelelangan dimulai dari : " + this.getTgl_mulai() + "Sampai Tanggal" +
+            System.out.println("waktu Pelelangan dimulai dari : " + this.getTgl_mulai() + " Sampai Tanggal " +
                                 this.getTgl_selesai());
-            System.out.println("Terlelang dengan harga " + (this.getHarga_lelang() != 0 ? this.getHarga_lelang() :
-                                "Barang Belum dilelang") + "pada tanggal " + this.getTgl_lelang());
+            System.out.println("Terlelang dengan harga : " + (this.getHarga_lelang() != 0 ? this.getHarga_lelang() + " pada tanggal " + this.getTgl_lelang() :
+                                " Barang Belum terlelang"));
         });
     }
 
