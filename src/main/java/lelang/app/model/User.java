@@ -18,6 +18,16 @@ public class User {
         this.tanggal_lahir = tanggal_lahir;
     }
 
+    public User(long id, String nama_lengkap, String username, String email, String password, Date tanggal_lahir) {
+        this.id = id;
+        this.nama_lengkap = nama_lengkap;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.alamat = "";
+        this.tanggal_lahir = tanggal_lahir;
+    }
+
     public long getId() {
         return id;
     }

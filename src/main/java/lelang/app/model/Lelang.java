@@ -30,8 +30,7 @@ public class Lelang {
     // handling N to N Relation
     private LinkedHashMap<Integer, List<Barang>> barangs = new LinkedHashMap<>();
 
-    public Lelang(long id, long barangId, long userId, long petugasId, Date tgl_mulai, Date tgl_selesai,
-            Date tgl_lelang, int harga_awal, int harga_lelang, Masyarakat user, Petugas petugas) {
+    public Lelang(long id, long barangId, long userId, long petugasId, Date tgl_mulai, Date tgl_selesai, Date tgl_lelang, int harga_awal, int harga_lelang, Masyarakat user, Petugas petugas) {
         this.id = id;
         this.barangId = barangId;
         this.userId = userId;

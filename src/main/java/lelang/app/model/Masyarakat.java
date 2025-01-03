@@ -15,8 +15,7 @@ public class Masyarakat extends User {
     private LinkedHashMap<Integer, List<PengajuanLelang>> pengajuans = new LinkedHashMap<>();
 
 
-    public Masyarakat(long id, int nik, String nama_lengkap, String username, String email, String password,
-            String alamat, Date tanggal_lahir) {
+    public Masyarakat(long id, int nik, String nama_lengkap, String username, String email, String password, String alamat, Date tanggal_lahir) {
         super(id, nama_lengkap, username, email, password, alamat, tanggal_lahir);
         this.nik = nik;
     }

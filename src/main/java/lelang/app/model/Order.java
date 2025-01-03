@@ -19,8 +19,7 @@ public class Order {
     private static LelangDAO dataLelang = new LelangDAO();
     private static BarangDAO dataBarang = new BarangDAO(); // to access data from barang
 
-    public Order(long id, long lelangId, Date orderDate, Date deliveryDate, String status, String shippingAddress,
-            String shippingStatus, String paymentStatus, String paymentMethod, int harga_akhir) {
+    public Order(long id, long lelangId, Date orderDate, Date deliveryDate, String status, String shippingAddress, String shippingStatus, String paymentStatus, String paymentMethod, int harga_akhir) {
         this.id = id;
         this.lelangId = lelangId;
         this.orderDate = orderDate;

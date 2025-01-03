@@ -1,0 +1,75 @@
+@startuml
+skinparam monochrome true
+' === Pengajuan Lelang ===
+rectangle "Pengajuan Lelang" as PengajuanLelang {
+  class PengajuanLelang {
+    -id: long
+    -userId: long
+    -kategoriId: long
+    -nama_barang: String
+    -status_pengajuan: String
+    -harga_lelang: int
+    -harga_barang: int
+    -mulai_lelang: Date
+    -selesai_lelang: Date
+    --
+    +getUser(): Masyarakat
+    +getKategori(): Kategori
+    +displayData(): void
+  }
+  class PengajuanLelangController {
+    -pengajuanLelangDAO: PengajuanLelangDAO
+    --
+    +getData(): void
+    +getAllPengajuanLelang(): List<PengajuanLelang>
+    +createPengajuanLelang(pengajuanLelang: PengajuanLelang): void
+    +updatePengajuanLelang(pengajuanLelang: PengajuanLelang): void
+    +deletePengajuanLelang(id: long): void
+    +getPengajuanLelangById(id: long): PengajuanLelang
+  }
+  PengajuanLelangController -- PengajuanLelang : manages
+}
+
+' === Lelang ===
+rectangle "Lelang" as Lelang {
+  class Lelang {
+    -id: long
+    -barangId: long
+    -userId: long
+    -petugasId: long
+    -tgl_mulai: Date
+    -tgl_selesai: Date
+    -tgl_lelang: Date
+    -harga_awal: int
+    -harga_lelang: int
+    --
+    +getBarangs(): LinkedHashMap<Integer, List<Barang>>
+    +getUser(): Masyarakat
+    +getPetugas(): Petugas
+    +getOrder(): Order
+    +displayData(): void
+  }
+  class LelangController {
+    -lelangDAO: LelangDAO
+    -penawaranController: PenawaranController
+    --
+    +getData(): void
+    +createLelang(lelang: Lelang): void
+    +updateLelang(lelang: Lelang): void
+    +deleteLelang(id: long): void
+    +getLelangById(id: long): Lelang
+    +getHistoryLelangByBarangId(idBarang: int): List<Penawaran>
+    +getHistoryLelangByUserId(idUser: int): List<Penawaran>
+  }
+  LelangController -- Lelang : manages
+}
+
+' === Relasi ===
+PengajuanLelang -- Masyarakat : user
+PengajuanLelang -- Kategori : kategori
+Lelang -- Barang : barang
+Lelang -- Masyarakat : user
+Lelang -- Petugas : petugas
+Lelang -- Order : order
+
+@enduml

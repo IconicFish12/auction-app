@@ -12,8 +12,7 @@ public class Petugas extends User {
     // Relation N to 1 lelang
     private LinkedHashMap<Integer, List<Lelang>> lelangs = new LinkedHashMap<>();
 
-    public Petugas(long id, int nip, String nama_lengkap, String username, String email, String password, String alamat,
-            Date tanggal_lahir, String role) {
+    public Petugas(long id, int nip, String nama_lengkap, String username, String email, String password, String alamat, Date tanggal_lahir, String role) {
         super(id, nama_lengkap, username, email, password, alamat, tanggal_lahir);
         this.nip = nip;
         this.role = role;
