@@ -127,6 +127,7 @@ public class BarangController extends Controller {
         return null;
     }
 
+
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
         if (entity instanceof Barang) {

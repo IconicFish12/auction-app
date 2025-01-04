@@ -80,5 +80,10 @@ public class User {
         this.tanggal_lahir = tanggal_lahir;
     }
 
-
+    public void displayData() {
+        System.out.println("ID: " + id);
+        System.out.println("Nama Lengkap: " + nama_lengkap);
+        System.out.println("Username: " + username);
+        System.out.println("Email: " + email);
+    }
 }

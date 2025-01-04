@@ -69,15 +69,16 @@ public class Masyarakat extends User {
 
     // display data 
 
+    @Override
     public void displayData() {
         System.out.println(" =========== Data Masyarakat ============");
-        System.out.println("Data ke -" + id);
-        System.out.println("NIK : " + nik);
-        System.out.println("Nama Lengkap : " + nama_lengkap);
-        System.out.println("username : " + username);
-        System.out.println("email : " + email);
-        System.out.println("Alamat Pengguna : " + alamat);
-        System.out.println("Tanggal Lahir : " + tanggal_lahir);
+        System.out.println("ID: " + id);
+        System.out.println("NIK: " + nik);
+        System.out.println("Nama Lengkap: " + nama_lengkap);
+        System.out.println("Username: " + username);
+        System.out.println("Email: " + email);
+        System.out.println("Alamat: " + alamat);
+        System.out.println("Tanggal Lahir: " + tanggal_lahir);
     }
 
 

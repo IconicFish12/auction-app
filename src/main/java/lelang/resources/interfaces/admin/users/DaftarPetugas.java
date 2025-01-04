@@ -9,11 +9,19 @@ import java.util.Map;
 
 import lelang.app.controller.PetugasController;
 import lelang.app.model.Petugas;
+import lelang.app.model.User;
 import lelang.mission.util.InputUtil;
 
 public class DaftarPetugas {
     private static PetugasController petugasController = new PetugasController();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    public static void viewAll(){
+        List<Petugas> petugasList = petugasController.getAllPetugas();
+        for (User petugas : petugasList){
+            petugas.displayData();
+        }
+    }
 
     public static void createPetugas() {
         System.out.println("============= Tambah Petugas =============");
