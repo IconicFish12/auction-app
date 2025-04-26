@@ -46,22 +46,19 @@ public class KategoriBarang {
    public static void tambahDataKategori() {
         try {
             System.out.println("============= Tambah Data Kategori =============");
-            int idKategori = 0;
-            while (true) {
-                System.out.print("Masukkan ID Kategori: ");
-                String idInput = InputUtil.getStrInput();
-                try {
-                    idKategori = Integer.parseInt(idInput);
-                    Kategori kategoriExist = kategoriController.getKategoriById(idKategori);
-                    if (kategoriExist != null) {
-                        System.out.println("Kategori dengan ID " + idKategori + " sudah ada.");
-                    } else {
-                        break;
+            // Generate ID Kategori Otomatis
+            long idKategori = 1;
+            LinkedHashMap<Integer, List<Kategori>> allKategori = kategoriController.getAllKategori();
+            if (!allKategori.isEmpty()) {
+                for (List<Kategori> kategoris : allKategori.values()) {
+                    for (Kategori kategori : kategoris) {
+                        if (kategori.getId() >= idKategori) {
+                            idKategori = kategori.getId() + 1;
+                        }
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("ID Kategori harus berupa angka.");
                 }
             }
+            System.out.println("Kategori ke-" + idKategori);
             System.out.print("Masukkan Nama Kategori: ");
             String namaKategori = InputUtil.getStrInput();
             if (namaKategori.isEmpty()) {
@@ -121,7 +118,7 @@ public class KategoriBarang {
 
             // Cek apakah kategori masih memiliki barang
             List<Barang> barangList = barangController.getBarangByKategoriId(idKategori);
-            if (!barangList.isEmpty()) {
+            if (barangList != null && !barangList.isEmpty()) {
                 System.out.println("Kategori tidak dapat dihapus karena masih memiliki barang");
                 return;
             }

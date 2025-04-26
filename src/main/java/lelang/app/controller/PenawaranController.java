@@ -27,13 +27,20 @@ public class PenawaranController extends Controller {
 
     public void createPenawaran(Penawaran penawaran) {
         try {
-            // Validasi penawaran (contoh: cek harga penawaran lebih tinggi dari penawaran sebelumnya)
+            // Validasi penawaran (contoh: cek harga penawaran lebih tinggi dari penawaran sebelumnya
+            BarangController barang = new BarangController();
+            int hargaBarang = barang.getBarangByIdBarang(penawaran.getBarangId()).getHarga_barang();
+            if (penawaran.getHarga_penawaran() <= hargaBarang) {
+                System.out.println("Penawaran gagal ditambahkan. Harga penawaran harus lebih tinggi dari harga barang.");
+                return;
+            }
             Penawaran penawaranTertinggi = getPenawaranTertinggiByBarangId(penawaran.getBarangId());
             if (penawaranTertinggi != null && penawaran.getHarga_penawaran() <= penawaranTertinggi.getHarga_penawaran()) {
                 System.out.println("Penawaran gagal ditambahkan. Harga penawaran harus lebih tinggi dari penawaran sebelumnya.");
                 return;
             }
             penawaranDAO.create(penawaran);
+            System.out.println("Penawaran berhasil ditambahkan.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

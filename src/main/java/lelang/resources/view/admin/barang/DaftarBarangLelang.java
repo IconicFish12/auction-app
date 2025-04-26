@@ -36,7 +36,6 @@ public class DaftarBarangLelang {
         }
     }
     public static void showAllDaftarBarangLelang(){
-        // Gunakan controller instead of DAO
         barangController.getData();
     }
     public static void showMenu(){

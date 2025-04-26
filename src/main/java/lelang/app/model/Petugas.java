@@ -12,8 +12,7 @@ public class Petugas extends User {
     // Relation N to 1 lelang
     private LinkedHashMap<Integer, List<Lelang>> lelangs = new LinkedHashMap<>();
 
-    public Petugas(long id, int nip, String nama_lengkap, String username, String email, String password, String alamat,
-            Date tanggal_lahir, String role) {
+    public Petugas(long id, int nip, String nama_lengkap, String username, String email, String password, String alamat, Date tanggal_lahir, String role) {
         super(id, nama_lengkap, username, email, password, alamat, tanggal_lahir);
         this.nip = nip;
         this.role = role;
@@ -48,16 +47,17 @@ public class Petugas extends User {
 
     // display data 
 
+    @Override
     public void displayData() {
         System.out.println(" =========== Data Petugas Lelang ============");
-        System.out.println("Data ke -" + id);
-        System.out.println("NIP : " + nip);
-        System.out.println("Nama Lengkap : " + nama_lengkap);
-        System.out.println("username : " + username);
-        System.out.println("email : " + email);
-        System.out.println("Alamat Petugas : " + alamat);
-        System.out.println("Tanggal Lahir : " + tanggal_lahir);
-        System.out.println("Bertugas Sebagai " + role);
+        System.out.println("ID: " + id);
+        System.out.println("NIP: " + nip);
+        System.out.println("Nama Lengkap: " + nama_lengkap);
+        System.out.println("Username: " + username);
+        System.out.println("Email: " + email);
+        System.out.println("Alamat: " + alamat);
+        System.out.println("Tanggal Lahir: " + tanggal_lahir);
+        System.out.println("Bertugas Sebagai: " + role);
     }
 
 }

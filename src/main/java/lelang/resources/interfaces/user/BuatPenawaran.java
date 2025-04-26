@@ -10,7 +10,6 @@ import lelang.Main;
 import java.util.List;
 
 public class BuatPenawaran {
-    private static PenawaranController penawaranController = new PenawaranController();
     private static BarangController barangController = new BarangController();
 
     public static void buatPenawaran() {
@@ -18,13 +17,14 @@ public class BuatPenawaran {
         // Tampilkan daftar barang lelang yang dibuka
         System.out.println("Daftar Barang Lelang yang Dibuka:");
         List<Barang> barangList = barangController.getAllBarang();
+        PenawaranController penawaranController = new PenawaranController();
         if (barangList == null) {
             System.out.println("Tidak ada barang lelang yang dibuka saat ini.");
             return;
         }
         boolean adaBarangDibuka = false;
         for (Barang barang : barangList) {
-            if (barang.getStatus_lelang().equalsIgnoreCase("dibuka")) {
+            if (barang.getStatus_lelang().equalsIgnoreCase("berlangsung")) {
                 adaBarangDibuka = true;
                 break;
             }
@@ -35,8 +35,13 @@ public class BuatPenawaran {
         }
         for (int i = 0; i < barangList.size(); i++) {
             Barang barang = barangList.get(i);
-            if (barang.getStatus_lelang().equalsIgnoreCase("dibuka")) {
-                System.out.println((i + 1) + ". " + barang.getNama_barang() + " - Harga Awal: " + barang.getHarga_barang());
+            if (barang.getStatus_lelang().equalsIgnoreCase("berlangsung")) {
+                Penawaran penawaranTertinggi = penawaranController.getPenawaranTertinggiByBarangId(barang.getId());
+                if (penawaranTertinggi != null) {
+                    System.out.println((i + 1) + ". " + barang.getNama_barang() + " - Harga Awal: " + barang.getHarga_barang() + " - Harga Tertinggi: " + penawaranTertinggi.getHarga_penawaran());
+                } else {
+                    System.out.println((i + 1) + ". " + barang.getNama_barang() + " - Harga Awal: " + barang.getHarga_barang() + " - Harga Tertinggi: Tidak Ada Penawaran");
+                }
             }
         }
 
@@ -59,8 +64,5 @@ public class BuatPenawaran {
 
         Penawaran penawaran = new Penawaran(0, barangPilihan.getId(), Main.getLoggedInUserId(), hargaPenawaran);
         penawaranController.createPenawaran(penawaran);
-        
-        penawaranController.createPenawaran(penawaran);
-        System.out.println("Penawaran berhasil dibuat!");
     }
 }

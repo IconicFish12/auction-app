@@ -163,16 +163,21 @@ public class BarangLelang {
             }
             Barang barang = listBarang.get(pilihan - 1);
             System.out.println("Akan Mengedit Barang: " + barang.getNama_barang());
-            System.out.print("Masukkan Nama Barang Baru: ");
+            System.out.print("Masukkan Nama Barang Baru (default: - untuk tidak mengubah): ");
             String namaBarang = InputUtil.getStrInput();
-            System.out.print("Masukkan Harga Barang Baru: ");
+            if (!namaBarang.equals("-")) {
+                barang.setNama_barang(namaBarang);
+            }
+            System.out.print("Masukkan Harga Barang Baru (default: -1 untuk tidak mengubah) : ");
             int hargaBarang = InputUtil.getIntInput();
-            System.out.print("Masukkan Deskripsi Barang Baru: ");
+            if (hargaBarang != -1) {
+                barang.setHarga_barang(hargaBarang);
+            }
+            System.out.print("Masukkan Deskripsi Barang Baru (default: - untuk tidak mengubah): ");
             String deskripsiBarang = InputUtil.getStrInput();
-
-            barang.setNama_barang(namaBarang);
-            barang.setHarga_barang(hargaBarang);
-            barang.setDeskripsiBarang(deskripsiBarang);
+            if (!deskripsiBarang.equals("-")) {
+                 barang.setDeskripsiBarang(deskripsiBarang);
+            }
             barangController.updateBarang(barang);
             System.out.println("Data barang berhasil diupdate.");
         } catch (Exception e) {
@@ -256,8 +261,5 @@ public class BarangLelang {
                 System.out.println("Input tidak valid. Masukkan angka!");
             }
         }
-    }
-    public static void main(String[] args) {
-        menu();
     }
 }

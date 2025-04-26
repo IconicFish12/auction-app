@@ -19,8 +19,7 @@ public class PengajuanLelang {
     private static MasyarakatDAO dataUser = new MasyarakatDAO();
     private static KategoriDAO dataKategori = new KategoriDAO();
     
-    public PengajuanLelang(long id, long userId, long kategoriId, String nama_barang, String status_pengajuan,
-            int harga_lelang, int harga_barang, Date mulai_lelang, Date selesai_lelang) {
+    public PengajuanLelang(long id, long userId, long kategoriId, String nama_barang, String status_pengajuan, int harga_lelang, int harga_barang, Date mulai_lelang, Date selesai_lelang) {
         this.id = id;
         this.userId = userId;
         this.kategoriId = kategoriId;

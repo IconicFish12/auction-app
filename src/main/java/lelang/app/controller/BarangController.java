@@ -114,6 +114,19 @@ public class BarangController extends Controller {
     public LinkedHashMap<Integer, List<Barang>> getAllBarangMap() {
         return barangDAO.findAll();
     }
+    
+    public Barang getBarangByNama(String namaBarang) {
+        LinkedHashMap<Integer, List<Barang>> dataBarang = barangDAO.findAll();
+        for (List<Barang> barangs : dataBarang.values()) {
+            for (Barang barang : barangs) {
+                if (barang.getNama_barang().equals(namaBarang)) {
+                    return barang;
+                }
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public <T> void createData(Map<String, Object> request, T entity) {
